@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
+import NavBar from './NavBar.jsx';
 
 export default class MainView extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    console.log('location is', this.props.location)
+  }
 
   render () {
     return (
-        <div>
-          This will later hold mainView, with
-          NavBar, which loads the same 4 links always
-          and the Route component, which will render a
-          component which matches the page part of the
-          link, with the groupID part of the link as props
+        <div className="MainView" onClick={() => this.handleClick()}>
+          <NavBar />
         </div>
       );
   }

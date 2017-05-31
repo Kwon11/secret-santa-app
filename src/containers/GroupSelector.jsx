@@ -9,13 +9,19 @@ class GroupSelector extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.temporaryStyle = {
+      width: '60px',
+      height: '60px',
+      marginLeft: '70px',
+      marginTop: '20px'
+    }
   }
 
   renderList() {
     const list = [];
     for (var key in this.props.groups) {
       list.push(
-        <li key={key}><Link to={key}>{key}</Link></li>
+        <li key={key} className="GroupMenuLink"><Link to={key}>{key}</Link></li>
         )
     };
     return list;
@@ -27,8 +33,8 @@ class GroupSelector extends Component {
         <Dropdown className="GroupSelector">
           <DropdownTrigger className="GroupTrigger">CurrentGroup</DropdownTrigger>
           <DropdownContent className="GroupMenu">
-            <div> image later </div>
-            <ul>
+            <img src="../LiamNeesons.png" style={this.temporaryStyle}></img>
+            <ul className="GroupMenuList">
               {this.renderList()}
             </ul>
           </DropdownContent>
