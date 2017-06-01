@@ -10,6 +10,23 @@ class Settings extends Component {
     return (
         <div>
           <h3>settings page </h3>
+          <div>
+            Group specific things
+            <ul>like
+              <li>Start date/due date</li>
+              <li>Add admin</li>
+              <li>Notifications on chat</li>
+              <li>etc</li>
+            </ul>
+          </div>
+          <div>
+            Not group specific things
+            <ul>
+              like
+              <li>email</li>
+              <li>etc</li>
+            </ul>
+          </div>
         </div>
       )
   }
