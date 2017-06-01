@@ -1,0 +1,65 @@
+MVP:
+  Pulls data from database
+  people register with facebook
+  Create event, invite people
+    -eventDetail shows starting date and memberlist
+    -invitations work somehow
+    -users can start their wishlist and notes
+  Start event - assign randoms
+  Users can:
+    add/remove items to their wishlist
+    buy items off a wishlist
+    *send chat
+
+current:
+  -Set up express server
+    -Amazon SDK or that github library to sign requests
+  -Search items
+    -Set up simple http request in component
+    -Set up action and wire it up to component
+  -Add to wishlist
+    -set up MySQL database
+    -Redux action fires request to server with itemID
+    -Server adds it to database
+    -returns new list to client
+    -client rerenders wishlist
+  -buy item
+    -CROSS THIS BRIDGE LATER
+
+
+groupobject: {
+  memberList:[NAMES/ID],
+  eventDetail: {
+    stage: 'pending/active/done',
+    assignDate: DATEOBJ,
+    dueDate: DATEOBJ,
+    admins: [ID],
+    spendingRange: [number, number],
+    location: '',
+
+  },
+  target: {
+    name: 'Tiger Woods',
+    notes: '',
+    avatar: '',
+    items: [AMAZON]
+
+  },
+  user: {
+    name: 'Liam Neesons',
+    notes: '',
+    avatar: '',
+    items: [AMAZON]
+  },
+  active: true,
+  admin: false
+}
+
+state =
+{
+  activeUser: 'Username',
+  grouops: {
+    group: {groupobject},
+    group: {groupobject}
+  }
+}

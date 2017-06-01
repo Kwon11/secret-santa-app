@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 
 const rootReducer = combineReducers({
-  activeUser: ((state = null) => state),
-  groups: ((state = null) => state)
+  activeUser: ((state = 'it just cant') => state),
+  groups: ((state = 'return undefined in initial run') => state)
 })
 
 export default rootReducer
