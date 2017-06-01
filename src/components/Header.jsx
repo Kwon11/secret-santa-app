@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GroupSelector from '../containers/GroupSelector.jsx';
-
+import { Route } from 'react-router-dom';
 
 
 /*
@@ -14,7 +14,7 @@ export default class Header extends Component {
 	render() {
 		return (
 			<nav className="Header">
-				<GroupSelector />
+				<Route path="/" component={GroupSelector}/>
 			</nav>
 		)
 	}

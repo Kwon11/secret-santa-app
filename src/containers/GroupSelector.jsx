@@ -21,7 +21,7 @@ class GroupSelector extends Component {
     const list = [];
     for (var key in this.props.groups) {
       list.push(
-        <li key={key} className="GroupMenuLink"><Link to={key}>{key}</Link></li>
+        <li key={key} className="GroupMenuLink" onClick={this.handleClick}><Link to={`${this.props.location.pathname}?group=${key}`}>{key}</Link></li>
         )
     };
     return list;
@@ -33,7 +33,7 @@ class GroupSelector extends Component {
         <Dropdown className="GroupSelector">
           <DropdownTrigger className="GroupTrigger">CurrentGroup</DropdownTrigger>
           <DropdownContent className="GroupMenu">
-            <img src="../LiamNeesons.png" style={this.temporaryStyle}></img>
+            <img onClick={this.handleClick} src="../LiamNeesons.png" style={this.temporaryStyle}></img>
             <ul className="GroupMenuList">
               {this.renderList()}
             </ul>
