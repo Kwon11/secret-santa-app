@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-class ListView extends Component {
+class UserListView extends Component {
   constructor(props) {
     super(props);
     if (this.props.groups[this.props.location.search.slice(7)]) {
       console.log('this.props is', this.props)
       this.state = {
-        list: this.props.groups[this.props.location.search.slice(7)].targetWish.items
+        list: this.props.groups[this.props.location.search.slice(7)].userWish.items
       }
     }
     this.renderList = this.renderList.bind(this);
@@ -18,7 +19,7 @@ class ListView extends Component {
     if (nextProps.groups[this.props.location.search.slice(7)]) {
       console.log('nextprops.location.search is', nextProps.location.search);
       this.setState({
-        list: nextProps.groups[nextProps.location.search.slice(7)].targetWish.items
+        list: nextProps.groups[nextProps.location.search.slice(7)].userWish.items
       })
     }
   }
@@ -38,6 +39,7 @@ class ListView extends Component {
       return (
           <div>
             <h3>LIST VIEEEWWW </h3>
+            <Link to={`/EditList${this.props.location.search}`} className="addItemsButton">Add / Remove Items </Link>
             <ul>
               {this.renderList()}
             </ul>
@@ -59,4 +61,4 @@ function mapStateToProps (state) {
   })
 }
 
-export default connect(mapStateToProps)(ListView);
+export default connect(mapStateToProps)(UserListView);

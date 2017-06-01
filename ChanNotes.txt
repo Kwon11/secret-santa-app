@@ -11,12 +11,15 @@ MVP:
     buy items off a wishlist
     *send chat
 
+(DONE) Express Server Set up
+
 current:
-  -Set up express server
-    -Amazon SDK or that github library to sign requests
   -Search items
-    -Set up simple http request in component
-    -Set up action and wire it up to component
+    -Button in listView directs to "ItemAdd.jsx"
+    -ItemAdd.jsx
+      -SearchBar, controlled by component state
+      -onSubmit => Action/Search => Redux Saga makes call => Reducer returns searchResults => ItemAdd.jsx renders searchResults
+      -items have "addToWishList" button
   -Add to wishlist
     -set up MySQL database
     -Redux action fires request to server with itemID
