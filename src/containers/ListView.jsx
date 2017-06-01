@@ -4,22 +4,27 @@ import { connect } from 'react-redux';
 class ListView extends Component {
   constructor(props) {
     super(props);
-    if (this.props.groups) {
+    if (this.props.groups[this.props.location.search.slice(7)]) {
+      console.log('this.props is', this.props)
       this.state = {
         list: this.props.groups[this.props.location.search.slice(7)].targetWish.items
       }
     }
+    this.renderList = this.renderList.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.groups) {
+    console.log('it received props', nextProps);
+    if (nextProps.groups[this.props.location.search.slice(7)]) {
+      console.log('nextprops.location.search is', nextProps.location.search);
       this.setState({
         list: nextProps.groups[nextProps.location.search.slice(7)].targetWish.items
       })
     }
   }
 
-  renderList () {
+  renderList () {//state is null here? why
+    console.log('this.state in renderlist', this.state)
     return this.state.list.map((item, index) => {
       return (
           <li key={index}>{item}</li>
@@ -28,14 +33,22 @@ class ListView extends Component {
   }
 
   render () {
+    if (this.props.groups[this.props.location.search.slice(7)]) {
+      console.log('so this is where it goes wrong', this.props)
+      return (
+          <div>
+            <h3>LIST VIEEEWWW </h3>
+            <ul>
+              {this.renderList()}
+            </ul>
+          </div>
+        )
+    }
     return (
-        <div>
-          <h3>LIST VIEEEWWW </h3>
-          <ul>
-            {this.renderList()}
-          </ul>
-        </div>
-      )
+      <div>
+        loading a groups
+      </div>
+    );
   }
 
 }

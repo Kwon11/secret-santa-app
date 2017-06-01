@@ -33,7 +33,7 @@ class GroupSelector extends Component {
         <Dropdown className="GroupSelector">
           <DropdownTrigger className="GroupTrigger">CurrentGroup</DropdownTrigger>
           <DropdownContent className="GroupMenu">
-            <img onClick={this.handleClick} src="../LiamNeesons.png" style={this.temporaryStyle}></img>
+            <img onClick={this.handleClick} src="./LiamNeesons.png" style={this.temporaryStyle}></img>
             <ul className="GroupMenuList">
               {this.renderList()}
             </ul>
