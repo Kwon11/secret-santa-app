@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { itemSearch } from '../actions/actions.js';
+import { bindActionCreators } from 'redux';
 
 class EditList extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class EditList extends Component {
       searchTerm: ''
     }
     this.handleChange = this.handleChange.bind(this);
+    this.renderList = this.renderList.bind(this);
   }
 
   handleChange (event) {
@@ -18,21 +20,34 @@ class EditList extends Component {
     console.log(this.state.searchTerm);
   }
 
+  renderList () {
+    var list = [];
+    if (this.props.searchResult) {
+      for (var key in this.props.searchResult) {
+        list.push(<li key={key}>{key} : {this.props.searchResult[key]}</li>)
+      }
+    }
+    return list;
+  }
+
   render () {
+    console.log('render', this.props.searchResult)
     return (
         <div>
           <ul>
           <li>
             <form onSubmit={(event) => {
                 event.preventDefault()
-                this.props.handleSubmit(this.state.searchTerm)
+                this.props.itemSearch(this.state.searchTerm)
               }
             }>
               <label>Search For Amazon Items</label>
               <input value={this.state.searchTerm} className="searchBar" onChange={this.handleChange} placeholder="Search for an Item!"></input>
             </form>
           </li>
-          <li>this.renderList method for when this has search</li>
+          <ul>
+            {this.renderList()}
+          </ul>
           <li> or put that in a whole new component </li>
           </ul>
         </div>
@@ -42,16 +57,15 @@ class EditList extends Component {
 
 const mapStateToProps = (state) => {
   return ({
-    groups: state.groups
+    groups: state.groups,
+    searchResult: state.searchResult
   })
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    handleSubmit: (query) => {
-      dispatch(itemSearch(query))
-    }
-  }
+  return bindActionCreators({
+    itemSearch: itemSearch
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditList);

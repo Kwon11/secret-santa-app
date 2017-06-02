@@ -4,6 +4,7 @@ export default function itemSearch (state = null, action) {
   switch(action.type) {
     case ITEM_SEARCH:
       console.log('action.query is', action.query);
+      console.log('state is', state);
       if (state) {
         return (
           {...state,
