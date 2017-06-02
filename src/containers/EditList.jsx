@@ -23,15 +23,14 @@ class EditList extends Component {
   renderList () {
     var list = [];
     if (this.props.searchResult) {
-      for (var key in this.props.searchResult) {
-        list.push(<li key={key}>{key} : {this.props.searchResult[key]}</li>)
+      for (var key in (this.props.searchResult.searchResult)) {
+        console.log('item', key, this.props.searchResult.searchResult[key])
       }
     }
     return list;
   }
 
   render () {
-    console.log('render', this.props.searchResult)
     return (
         <div>
           <ul>

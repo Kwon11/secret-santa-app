@@ -1,6 +1,6 @@
 import { ITEM_SEARCH } from '../actions/actions.js';
 
-export default function itemSearch (state = null, action) {
+export default function itemSearch (state = {}, action) {
   switch(action.type) {
     case ITEM_SEARCH:
       console.log('action.query is', action.query);
@@ -17,7 +17,6 @@ export default function itemSearch (state = null, action) {
           }
         )
       }
-      return state;
     default:
       return state;
   }
