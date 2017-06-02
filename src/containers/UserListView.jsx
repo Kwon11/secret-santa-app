@@ -16,7 +16,7 @@ class UserListView extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log('it received props', nextProps);
-    if (nextProps.groups[this.props.location.search.slice(7)]) {
+    if (nextProps.groups[nextProps.location.search.slice(7)]) {
       console.log('nextprops.location.search is', nextProps.location.search);
       this.setState({
         list: nextProps.groups[nextProps.location.search.slice(7)].userWish.items

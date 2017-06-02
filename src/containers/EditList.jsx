@@ -24,7 +24,7 @@ class EditList extends Component {
     var list = [];
     if (this.props.searchResult) {
       for (var key in (this.props.searchResult.searchResult)) {
-        console.log('item', key, this.props.searchResult.searchResult[key])
+        list.push(<li key={key}>{this.props.searchResult.searchResult[key]}</li>)
       }
     }
     return list;
