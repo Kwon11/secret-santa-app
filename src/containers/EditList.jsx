@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { itemSearch } from '../actions/actions.js';
 
 class EditList extends Component {
   constructor(props) {
@@ -21,7 +22,16 @@ class EditList extends Component {
     return (
         <div>
           <ul>
-          <li><form><label>Search For Amazon Items</label><input value={this.state.searchTerm} className="searchBar" onChange={this.handleChange} placeholder="Search for an Item!"></input></form></li>
+          <li>
+            <form onSubmit={(event) => {
+                event.preventDefault()
+                this.props.handleSubmit(this.state.searchTerm)
+              }
+            }>
+              <label>Search For Amazon Items</label>
+              <input value={this.state.searchTerm} className="searchBar" onChange={this.handleChange} placeholder="Search for an Item!"></input>
+            </form>
+          </li>
           <li>this.renderList method for when this has search</li>
           <li> or put that in a whole new component </li>
           </ul>
@@ -30,10 +40,18 @@ class EditList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return ({
     groups: state.groups
   })
 }
 
-export default connect(mapStateToProps)(EditList);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleSubmit: (query) => {
+      dispatch(itemSearch(query))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditList);

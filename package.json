@@ -10,7 +10,8 @@
     "presets": [
       "es2015",
       "react"
-    ]
+    ],
+  "plugins": ["transform-object-rest-spread"]
   },
   "dependencies": {
     "aws-lib": "^0.3.0",
