@@ -59,7 +59,8 @@ const initialState = {
       },
       active: true
     }
-  }
+  },
+  searchResult: 'gets that state'
 };
 
 const sagaMiddleWare = createSagaMiddleWare(); //create our custom middleware
