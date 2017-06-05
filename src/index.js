@@ -11,12 +11,6 @@ import './styles.css';
 //redux-saga
 import createSagaMiddleWare from 'redux-saga'
 import rootSaga from './sagas/sagas.js'
-const sagaMiddleWare = createSagaMiddleWare(); //create our custom middleware
-const store = createStore(reducers, applyMiddleware(sagaMiddleWare))
-sagaMiddleWare.run(rootSaga);
-const action = type => store.dispatch({type});
-
-
 
 const initialState = {
   activeUser: 'Liam Neesons',
@@ -67,6 +61,13 @@ const initialState = {
     }
   }
 };
+
+const sagaMiddleWare = createSagaMiddleWare(); //create our custom middleware
+const store = createStore(reducers, initialState, applyMiddleware(sagaMiddleWare))
+sagaMiddleWare.run(rootSaga);
+const action = type => store.dispatch({type});
+
+
 
 ReactDOM.render(
 	<Provider store={store}>
