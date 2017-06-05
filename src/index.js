@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
@@ -7,7 +8,16 @@ import App from './components/App.jsx'
 import reducers from './reducers'
 import './styles.css';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore)
+//redux-saga
+import createSagaMiddleWare from 'redux-saga'
+import rootSaga from './sagas/sagas.js'
+const sagaMiddleWare = createSagaMiddleWare(); //create our custom middleware
+const store = createStore(reducers, applyMiddleware(sagaMiddleWare))
+sagaMiddleWare.run(rootSaga);
+const action = type => store.dispatch({type});
+
+
+
 const initialState = {
   activeUser: 'Liam Neesons',
   groups: {
@@ -59,7 +69,7 @@ const initialState = {
 };
 
 ReactDOM.render(
-	<Provider store={createStoreWithMiddleware(reducers, initialState)}>
+	<Provider store={store}>
 		<BrowserRouter>
 			<App/>
 		</BrowserRouter>
