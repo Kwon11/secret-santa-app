@@ -1,15 +1,9 @@
 import { ITEM_SEARCH } from '../actions/actions.js';
 
-const lala = {
-  'eyyy': 'eyy',
-  'lmano': 'asd'
-}
-
 export default function itemSearch (state = {}, action) {
   switch(action.type) {
     case ITEM_SEARCH:
-      console.log('action.query is', action.query);
-      console.log('state is', state);
+      console.log('item_search activates');
       if (state) {
         return (
           {
@@ -21,6 +15,9 @@ export default function itemSearch (state = {}, action) {
 
         )
       }
+    case 'ITEM_SEARCH_SUCCESS':
+      console.log('reducer gets success', action)
+      return state;
     default:
       return state;
   }

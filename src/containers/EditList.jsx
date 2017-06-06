@@ -17,7 +17,6 @@ class EditList extends Component {
   handleChange (event) {
     event.preventDefault();
     this.setState({searchTerm: event.target.value})
-    console.log(this.state.searchTerm);
   }
 
   renderList () {

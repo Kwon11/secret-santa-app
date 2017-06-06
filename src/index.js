@@ -66,6 +66,7 @@ const initialState = {
 const sagaMiddleWare = createSagaMiddleWare(); //create our custom middleware
 const store = createStore(reducers, initialState, applyMiddleware(sagaMiddleWare))
 sagaMiddleWare.run(rootSaga);
+
 const action = type => store.dispatch({type});
 
 

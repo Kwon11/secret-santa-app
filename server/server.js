@@ -11,14 +11,15 @@ var prodAdv = aws.createProdAdvClient(process.env.AWS_ACCESS_KEY_ID, process.env
 app.use(express.static(path.join(__dirname, '../dist')));
 
 app.get('/test', (req, res) => {
-
-  var options = {SearchIndex: "Books", Keywords: "Javascript"}
-
+  console.log(req.query.keywords);
+  var options = {
+    SearchIndex: 'Books',
+    Keywords: req.query.keywords
+  }
   prodAdv.call("ItemSearch", options, function(err, result) {
-    console.log(result);
+    console.log(JSON.stringify(result))
     res.send(result);
   })
-
 })
 
 
