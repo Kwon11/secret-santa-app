@@ -12,6 +12,7 @@ export function* amazonCall (action) {
   //action has type:ITEM_SEARCH and query from user
   console.log('amazonCall got called');
   const itemData = yield call(apiCall, action.query);
+  console.log('itemData is', itemData);
   yield put({
     type: 'ITEM_SEARCH_SUCCESS',
     itemData: itemData
@@ -30,13 +31,9 @@ export function* watchAmazonCall () {
   //dispatch an object with {type: type} through the store
 
 function apiCall(keywords) {
-  console.log('apiCall got called')
-  axios.get(`/test?keywords=${keywords}`)
-    .then ((response) => {
-      console.log('response from my server', response)
-      return response;
-    })
-    .catch((error) => {
-      console.log('error apicall', error);
-    })
+  return axios.get(`/test?keywords=${keywords}`)
+          .then((response) => {
+              console.log('playing with promises');
+              return response;
+          })
 }
