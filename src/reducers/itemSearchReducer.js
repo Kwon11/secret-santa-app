@@ -4,20 +4,10 @@ export default function itemSearch (state = {}, action) {
   switch(action.type) {
     case ITEM_SEARCH:
       console.log('item_search activates');
-      if (state) {
-        return (
-          {
-              '1': 'lol',
-              '2': 'asdfh',
-              '3': 'a;wfijio',
-              '4': 'nothing we do matters'
-          }
-
-        )
-      }
+      return 'searching';
     case 'ITEM_SEARCH_SUCCESS':
-      console.log('reducer gets success', action)
-      return state;
+      console.log('reducer gets success', action.itemData.data.Items.Item);
+      return action.itemData.data.Items.Item;
     default:
       return state;
   }

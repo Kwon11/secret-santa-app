@@ -10,9 +10,7 @@ export default function* rootSaga () {
 
 export function* amazonCall (action) {
   //action has type:ITEM_SEARCH and query from user
-  console.log('amazonCall got called');
   const itemData = yield call(apiCall, action.query);
-  console.log('itemData is', itemData);
   yield put({
     type: 'ITEM_SEARCH_SUCCESS',
     itemData: itemData
@@ -22,18 +20,15 @@ export function* amazonCall (action) {
 export function* watchAmazonCall () {
   yield takeEvery(ITEM_SEARCH, amazonCall);
 }
-//bundle amazonCall into rootSaga
-//amazonCall listens for action.type 'AMAZON SEARCH'
-  //set up EditList onSubmit to be an action dispatch
-
-//theres an action function defined in main.js
-  //all it does is (type) => store.dispatch({type})
-  //dispatch an object with {type: type} through the store
 
 function apiCall(keywords) {
   return axios.get(`/test?keywords=${keywords}`)
           .then((response) => {
-              console.log('playing with promises');
+            console.log('successful call')
               return response;
+          })
+          .catch((error) => {
+            console.log('error in apicall', error);
+            return null;
           })
 }

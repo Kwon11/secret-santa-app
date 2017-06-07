@@ -13,11 +13,11 @@ app.use(express.static(path.join(__dirname, '../dist')));
 app.get('/test', (req, res) => {
   console.log(req.query.keywords);
   var options = {
-    SearchIndex: 'Books',
+    SearchIndex: 'All',
+    ResponseGroup: 'OfferSummary, ItemAttributes, Images',
     Keywords: req.query.keywords
   }
   prodAdv.call("ItemSearch", options, function(err, result) {
-    console.log(JSON.stringify(result))
     res.send(result);
   })
 })

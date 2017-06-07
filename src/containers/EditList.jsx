@@ -3,15 +3,16 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { itemSearch } from '../actions/actions.js';
 import { bindActionCreators } from 'redux';
+import AmazonItem from '../components/AmazonItem.jsx';
 
 class EditList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      list: []
     }
     this.handleChange = this.handleChange.bind(this);
-    this.renderList = this.renderList.bind(this);
   }
 
   handleChange (event) {
@@ -19,21 +20,22 @@ class EditList extends Component {
     this.setState({searchTerm: event.target.value})
   }
 
-  renderList () {
-    var list = [];
-    if (this.props.searchResult) {
-      for (var key in (this.props.searchResult.searchResult)) {
-        list.push(<li key={key}>{this.props.searchResult.searchResult[key]}</li>)
-      }
+  componentWillReceiveProps(nextProps) {
+    console.log('nextProps in EditList', nextProps);
+    if (nextProps.searchResult === 'searching') {
+      return 'Waiting for Amazon results!'
+    } else if (nextProps.searchResult !== null) {
+      this.state.list = nextProps.searchResult.map((item) => {
+        return <AmazonItem key={item.ASIN} item={item}/>
+      })
     }
-    return list;
   }
 
   render () {
+    console.log('rendered')
     return (
         <div>
-          <ul>
-          <li>
+          <h3>
             <form onSubmit={(event) => {
                 event.preventDefault()
                 this.props.itemSearch(this.state.searchTerm)
@@ -42,11 +44,9 @@ class EditList extends Component {
               <label>Search For Amazon Items</label>
               <input value={this.state.searchTerm} className="searchBar" onChange={this.handleChange} placeholder="Search for an Item!"></input>
             </form>
-          </li>
-          <ul>
-            {this.renderList()}
-          </ul>
-          <li> or put that in a whole new component </li>
+          </h3>
+          <ul className="WishList">
+            {this.state.list}
           </ul>
         </div>
       )

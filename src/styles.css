@@ -50,7 +50,7 @@ body {
 .MainView {
   margin-top: 20px;
   background-color: grey;
-  height: 100vh;
+  min-height: 100vh;
   width: 80vw;
   margin: auto;
 }
@@ -67,4 +67,17 @@ body {
   text-align: center;
   list-style-type: none;
   padding: 10px;
+}
+
+.AmazonItem {
+  width: 50vw;
+  background-color: white;
+  border: 1px solid black;
+  margin: auto;
+  padding: 15px;
+}
+
+.WishList {
+  padding: 10px;
+  margin: 0px;
 }
