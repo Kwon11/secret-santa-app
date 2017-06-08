@@ -13,25 +13,36 @@ var connection = mysql.createConnection({
   password: 'secretSanta69',
   database: 'secretSanta'
 });
-/*
-connection.connect((error) => {
-  if (error) {
-    console.log('error connecting to MySQL', error);
-  }
-  connection.query('CREATE TABLE test(id int primary key auto_increment, name varchar(255), age int, address text)', function(err, result) {
-    if (err) throw err
-    connection.query('INSERT INTO test (name, age, address) VALUES (?, ?, ?)', ['Larry', '41', 'California, USA'], function(err, result) {
-      if (err) throw err
-      connection.query('SELECT * FROM test', function(err, results) {
-        if (err) throw err
-      })
-    })
-  }) 
-})
-*/
-
 
 app.use(express.static(path.join(__dirname, '../dist')));
+
+app.get('/EditList', (req, res) => {
+  //hard code who the "user" is for now
+  //query database for all values related to that user, construct initial state on this server -- worry about lazy loading later
+  var activeUser = 2;
+  console.log('get request');
+  connection.connect((error)=> {
+    if (error) {
+      console.log ('error connecting to MySQL', error);
+      res.sendStatus(200);
+    }
+    //get the user's name
+    connection.query(`select name from users where id=${activeUser}`, (err, result) => {
+      if (err) throw err;
+      console.log('result of database query', result[0].name);
+      connection.query('select group_id, target_id ')//GET BACK TO WORK HERE
+    })
+    //get all the groups he is a part of
+    //for each group
+      //get group name
+      //get target
+      //get target wish_list
+      //get user's wish_list
+    //build out that data.initialstate and send back
+
+  })
+  
+})
 
 app.get('/test', (req, res) => {
   console.log(req.query.keywords);
