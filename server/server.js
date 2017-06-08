@@ -10,9 +10,13 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'secretSanta69',
+  password: process.env.MYSQL_ROOT_PASSWORD,
   database: 'secretSanta'
 });
+
+
+
+
 
 app.use(express.static(path.join(__dirname, '../dist')));
 
