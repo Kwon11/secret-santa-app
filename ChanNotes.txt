@@ -68,6 +68,7 @@ state =
 }
 const initialState = {
   activeUser: 'Liam Neesons',
+  activeUserName: 'Liam Neesons',
   groups: {
     school: {
       memberList:["Stepanie Schertz", "Germaine Guider", "Noella Nigh", "Melaine Mortimore", "Myrtle Murray", "Regena Roby", "Wilford Weingartner", "Zita Zahm", "Aura Applewhite", "Janine Justice"],
