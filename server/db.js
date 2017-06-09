@@ -1,18 +1,14 @@
 function generateMemberships () {
-
   connection.connect((error)=> {
     if (error) {
       console.log('mysql err generateMemberships', error);
     }
-    //5 groups
-    //each member 3x, 6 people per group
-    var records = {};
+    var records = {}; //object to keep track of how many times user has been used  
     for (var i = 1; i < 11; i++) {
       records[i] = 0;
-    } //object to keep track of how many times user has been used. set to 0 each time
-    console.log('records[2]', records[2]);
-    
-    for (var groupCounter = 1; groupCounter < 6; groupCounter++) { //go through the groups
+    } 
+
+    for (var groupCounter = 1; groupCounter < 6; groupCounter++) { 
       var groupBeingBuilt = [];
       for (var groupSize = 0; groupSize < 6; groupSize++) {
         var randomUser = Math.floor(Math.random() * 10) + 1;
@@ -20,21 +16,16 @@ function generateMemberships () {
           randomUser = Math.floor(Math.random()*10 + 1);
         }
         groupBeingBuilt.push(randomUser);
-        connection.query(`INSERT INTO memberships (user_id, group_id, target_id, wishlist, admin) VALUES (${randomUser}, ${groupCounter}, null, ${"\"" + JSON.stringify([randomUser, groupCounter, randomUser, randomUser]) + "\""}, false)`, (err, result)=>{
+        connection.query(`INSERT INTO memberships (user_id, group_id, target_id, wishlist, admin) VALUES (${randomUser}, ${groupCounter}, null, ${JSON.stringify(randomUser)}, false)`, (err, result)=>{
           if (err) throw err;
         });
       }
     }
-  
   })
-
 }
-
-// generateMemberships();
 
 function assignTargets () {
   connection.connect((error) => {
-
     for (var abc = 1; abc < 6; abc++ ) {
       function asyncFixerHack (groupCounter) {
         connection.query(`SELECT user_id FROM memberships WHERE group_id=${groupCounter}`, (err, result) => {
@@ -45,8 +36,6 @@ function assignTargets () {
           }
           console.log(`group ${groupCounter}`, groupMembers);
           var j = 0;
-
-
           function queryThenCallNext (index, group, groupId) {
             var target = index + 1;
             if (target === (group.length)) {
@@ -69,8 +58,60 @@ function assignTargets () {
       asyncFixerHack(abc);
     }
   })
-
-
 }
 
-assignTargets();
+connection.connect((error) => {
+  if (error) {
+    console.log('connecting error A', error)
+  }
+
+  connection.query('select user_id, group_id from memberships', (err, membershipResult) => {
+    if (err) {
+      throw err;
+    }
+    console.log('queried for memberships', membershipResult);
+
+    function updateListThenCallNext (index) {
+
+      var options = {
+        SearchIndex: 'All',
+        ResponseGroup: 'OfferSummary, ItemAttributes, Images',
+        Keywords: searchTerms[index]
+      }
+      var wishList;
+      prodAdv.call("ItemSearch", options, function(err, result) {
+        if (err) {
+          console.log('error with amazon', err);
+        }
+        
+        wishList = result.Items.Item.map((element) => {
+          return element.ASIN;
+        })
+        var wishListString = "";
+        for (var wishListCounter = 0; wishListCounter < wishList.length; wishListCounter++) {
+          wishListString += " " + wishList[wishListCounter]
+        }
+        wishListString = "\"" + wishListString + "\""
+        console.log('wishListString:', wishListString)
+        var thanos = `UPDATE memberships SET wishlist=${wishListString} WHERE user_id=${membershipResult[index].user_id} AND group_id=${membershipResult[index].group_id}`;
+        connection.query(thanos, (err, result) => {
+          if (index % 3 === 0) {
+            console.log(thanos, index);
+          }
+          if (err) {
+            throw err;
+          }
+          if (index < 29) {
+            updateListThenCallNext(index+1); 
+          }
+        })  
+      })
+
+    }
+    updateListThenCallNext(0);
+
+  }) 
+
+})
+
+var searchTerms = ["javascript", "mustang", "mug", "coffee", "fertilizer", "caffeine", "scissors", "chairs", "baseball", "depression", "trigger", "oranges", "superman", "marijuana", "java", "halo", "smallville", "suits", "simpsons", "digimon", "samurai", "ninja", "pirate", "santa", "southpark", "water", "cable", "samsung", "sony", "navajo", "jabroni"];

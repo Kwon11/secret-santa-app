@@ -66,3 +66,23 @@ state =
     group: {groupobject}
   }
 }
+const initialState = {
+  activeUser: 'Liam Neesons',
+  groups: {
+    school: {
+      memberList:["Stepanie Schertz", "Germaine Guider", "Noella Nigh", "Melaine Mortimore", "Myrtle Murray", "Regena Roby", "Wilford Weingartner", "Zita Zahm", "Aura Applewhite", "Janine Justice"],
+      eventDetail: {
+      },
+      targetWish: {
+        name: 'Tiger Woods',
+        items: [{},{}, {}, {},{} ,{} ,{}]
+      },
+      userWish: {
+        name: 'Liam Neesons',
+        items: [{}, {}, {}, {}, {}]
+      },
+      active: true
+    }
+  },
+  searchResult: null
+};
