@@ -89,7 +89,10 @@ connection.connect((error) => {
         })
         var wishListString = "";
         for (var wishListCounter = 0; wishListCounter < wishList.length; wishListCounter++) {
-          wishListString += " " + wishList[wishListCounter]
+          wishListString += wishList[wishListCounter];
+          if (wishListCounter !== wishList.length-1) {
+            wishListString += ",";
+          }
         }
         wishListString = "\"" + wishListString + "\""
         console.log('wishListString:', wishListString)
