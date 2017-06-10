@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import AmazonItem from '../components/AmazonItem.jsx';
 
 class TargetListView extends Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class TargetListView extends Component {
     if (this.props.groups[this.props.location.search.slice(7)]) {
       console.log('this.props is', this.props)
       this.state = {
-        list: this.props.groups[this.props.location.search.slice(7)].targetWish.items
+        list: this.props.groups[this.props.location.search.slice(7)].targetWishlist
       }
     }
     this.renderList = this.renderList.bind(this);
@@ -18,7 +19,7 @@ class TargetListView extends Component {
     if (nextProps.groups[nextProps.location.search.slice(7)]) {
       console.log('nextprops.location.search is', nextProps.location.search);
       this.setState({
-        list: nextProps.groups[nextProps.location.search.slice(7)].targetWish.items
+        list: nextProps.groups[nextProps.location.search.slice(7)].targetWishlist
       })
     }
   }
@@ -27,7 +28,7 @@ class TargetListView extends Component {
     console.log('this.state in renderlist', this.state)
     return this.state.list.map((item, index) => {
       return (
-          <li key={index}>{item}</li>
+          <AmazonItem key={index} item={item} />
         )
     });
   }
@@ -37,7 +38,7 @@ class TargetListView extends Component {
       console.log('so this is where it goes wrong', this.props)
       return (
           <div>
-            <h3>LIST VIEEEWWW </h3>
+            <h3>{this.props.groups[this.props.location.search.slice(7)].targetName}'s Wishlist</h3>
             <ul>
               {this.renderList()}
             </ul>

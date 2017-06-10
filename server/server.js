@@ -11,16 +11,20 @@ var connection = mysql.createConnection({
   password: process.env.MYSQL_ROOT_PASSWORD,
   database: 'secretSanta'
 });
+connection.connect(error => {
+  if (error) {
+    console.log('error connecting mysql', error);
+  } else {
+    console.log('connected mysql');
+  }
+});
+
+
 var firstCallPromise = function (activeUser) {
   return new Promise ((resolve, reject) => {
-    connection.connect(error => {
-      if (error) {
-        reject(error);
-      }
       connection.query(`SELECT group_id, target_id, wishlist FROM memberships WHERE user_id=${activeUser}`, (err, result) => {
         resolve(result);
       })
-    })
   });
 }
 var secondCallPromise = function (firstData, activeUser) { //returns a promise.all
@@ -46,7 +50,7 @@ var targetWishlistsCall = function (data) {
     .then((data) => {
         return new Promise ((resolve, reject) => {
           var complete = data.length;
-          var userWishlistData = {};
+          var userWishlistData = [];
           var counter = 0;
           for (var i = 0; i < data.length; i++) {
             function amazonBatchCall (index) {
@@ -61,7 +65,10 @@ var targetWishlistsCall = function (data) {
                   console.log(err);
                   reject(err);
                 }
-                userWishlistData[data[index].group_id] = result.Items.Item;
+                userWishlistData.push({
+                  group_id: data[index].group_id,
+                  wishlist: result.Items.Item
+                })
                 if (counter === complete) {
                   resolve(userWishlistData);
                 }
@@ -104,7 +111,7 @@ var convertToWishlist = (data) => {
 var userWishlistsCall = (data) => {
   return new Promise ((resolve, reject) => {
     var complete = data.length;
-    var userWishlistData = {};
+    var userWishlistData = [];
     var counter = 0;
     for (var i = 0; i < data.length; i++) {
       function amazonBatchCall (index) {
@@ -118,7 +125,10 @@ var userWishlistsCall = (data) => {
           if (err) {
             reject(err);
           }
-          userWishlistData[data[index].group_id] = result.Items.Item;
+          userWishlistData.push({
+            group_id: data[index].group_id,
+            wishlist: result.Items.Item
+          })
           if (counter === complete) {
             resolve(userWishlistData);
           }
@@ -215,16 +225,34 @@ app.get('/InitialState', (req, res) => {
   mainCall(activeUser)
     .then((result) => {
       //construct here, then send result
-      //[0 -- username, 1 -- [{group_id and groupName}], 2 -- [{group_id, target_id, targetName}], 3 -- [{group_id: [items], group_id:[items]} userWishLIst],  4 --[same but for target]]
+      //[0 -- username, 1 -- [{group_id and groupName}], 2 -- [{group_id, target_id, targetName}], 3 -- [{group_id: group_id, wishlist: []}] userWishLIst],  4 --[same but for target]]
+      console.log('data from maincall', result);
       var initialState = {};
       initialState.activeUser = result[0];
       initialState.groups = {};
       for (var i = 0; i < result[1].length; i++) {
-        initialState.groups[result[1][groupName]] = {
-          targetWishlist: result
+        initialState.groups[result[1][i].group_id] = {
+          groupname: result[1][i].groupName
+        }
+      } //now it has groupName
+      //now it has target_id and targetName in each group
+      for (var i = 0; i < result[1].length; i++) {
+        initialState.groups[result[2][i].group_id].targetName = result[2][i].targetName;
+        initialState.groups[result[2][i].group_id].target_id = result[2][i].target_id;
+        initialState.groups[result[3][i].group_id].userWishlist = result[3][i].wishlist;
+        initialState.groups[result[4][i].group_id].targetWishlist = result[4][i].wishlist
+      }
+      console.log('final initialstate', initialState);
+      res.send(initialState);
+    }) //BUILD THE STATE AND SERVE
+    /*{
+      activeUser: "username",
+      groups: {
+        452: {
+          groupName: 'school'
         }
       }
-    }) //BUILD THE STATE AND SERVE
+    }*/
 })
 app.listen(3000, () => {
   console.log('express server is going 3000');

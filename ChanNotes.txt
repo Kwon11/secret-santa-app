@@ -13,77 +13,29 @@ MVP:
 
 (DONE) Express Server Set up
 
-current:
-  -Search items
-    -Button in listView directs to "ItemAdd.jsx"
-    -ItemAdd.jsx
-      -SearchBar, controlled by component state
-      -onSubmit => Action/Search => Redux Saga makes call => Reducer returns searchResults => ItemAdd.jsx renders searchResults
-      -items have "addToWishList" button
-  -Add to wishlist
-    -set up MySQL database
-    -Redux action fires request to server with itemID
-    -Server adds it to database
-    -returns new list to client
-    -client rerenders wishlist
-  -buy item
-    -CROSS THIS BRIDGE LATER
-
-
-groupobject: {
-  memberList:[NAMES/ID],
-  eventDetail: {
-    stage: 'pending/active/done',
-    assignDate: DATEOBJ,
-    dueDate: DATEOBJ,
-    admins: [ID],
-    spendingRange: [number, number],
-    location: '',
-
-  },
-  target: {
-    name: 'Tiger Woods',
-    notes: '',
-    avatar: '',
-    items: [AMAZON]
-
-  },
-  user: {
-    name: 'Liam Neesons',
-    notes: '',
-    avatar: '',
-    items: [AMAZON]
-  },
-  active: true,
-  admin: false
+{ activeUser: 'aaaa',
+  groups:
+   { '
+      2': { 
+            groupname: 'Bananas',
+            targetName: 'cccc',
+            target_id: 7,
+            targetWishlist: [Object],
+            userWishlist: [Object] 
+          },
+     '3': { 
+            groupname: 'Cats',
+            userWishlist: [Object],
+            targetName: 'dddd',
+            target_id: 8,
+            targetWishlist: [Object] 
+          },
+     '4': { 
+            groupname: 'Dogs',
+            targetName: 'dddd',
+            target_id: 8,
+            userWishlist: [Object],
+            targetWishlist: [Object] 
+          } 
+  } 
 }
-
-state =
-{
-  activeUser: 'Username',
-  grouops: {
-    group: {groupobject},
-    group: {groupobject}
-  }
-}
-const initialState = {
-  activeUser: 'Liam Neesons',
-  activeUserName: 'Liam Neesons',
-  groups: {
-    school: {
-      memberList:["Stepanie Schertz", "Germaine Guider", "Noella Nigh", "Melaine Mortimore", "Myrtle Murray", "Regena Roby", "Wilford Weingartner", "Zita Zahm", "Aura Applewhite", "Janine Justice"],
-      eventDetail: {
-      },
-      targetWish: {
-        name: 'Tiger Woods',
-        items: [{},{}, {}, {},{} ,{} ,{}]
-      },
-      userWish: {
-        name: 'Liam Neesons',
-        items: [{}, {}, {}, {}, {}]
-      },
-      active: true
-    }
-  },
-  searchResult: null
-};

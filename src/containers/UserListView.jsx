@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import AmazonItem from '../components/AmazonItem.jsx';
 
 class UserListView extends Component {
   constructor(props) {
     super(props);
     if (this.props.groups[this.props.location.search.slice(7)]) {
       this.state = {
-        list: this.props.groups[this.props.location.search.slice(7)].userWish.items
+        list: this.props.groups[this.props.location.search.slice(7)].userWishlist
       }
     }
     this.renderList = this.renderList.bind(this);
@@ -16,7 +17,7 @@ class UserListView extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.groups[nextProps.location.search.slice(7)]) {
       this.setState({
-        list: nextProps.groups[nextProps.location.search.slice(7)].userWish.items
+        list: nextProps.groups[nextProps.location.search.slice(7)].userWishlist
       })
     }
   }
@@ -24,7 +25,7 @@ class UserListView extends Component {
   renderList () {
     return this.state.list.map((item, index) => {
       return (
-          <li key={index}>{item}</li>
+          <AmazonItem key={index} item={item}/>
         )
     });
   }
@@ -33,8 +34,8 @@ class UserListView extends Component {
     if (this.props.groups[this.props.location.search.slice(7)]) {
       return (
           <div>
-            <h3>LIST VIEEEWWW </h3>
-            <Link to={`/EditList${this.props.location.search}`} className="addItemsButton">Add / Remove Items </Link>
+            <h3>Your list for {this.props.groups[this.props.location.search.slice(7)].groupname} </h3>
+            <Link to={`/EditList${this.props.location.search}`} className="addItemsButton">Add Items </Link>
             <ul>
               {this.renderList()}
             </ul>

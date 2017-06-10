@@ -11,6 +11,7 @@ import './styles.css';
 //redux-saga
 import createSagaMiddleWare from 'redux-saga'
 import rootSaga from './sagas/sagas.js'
+import axios from 'axios';
 
 const initialState = {
   activeUser: 'Liam Neesons',
@@ -63,18 +64,24 @@ const initialState = {
   searchResult: null
 };
 
-const sagaMiddleWare = createSagaMiddleWare(); //create our custom middleware
-const store = createStore(reducers, initialState, applyMiddleware(sagaMiddleWare))
-sagaMiddleWare.run(rootSaga);
+axios.get('/InitialState')
+  .then((response) => {
+    console.log('response', response);
+    const sagaMiddleWare = createSagaMiddleWare(); //create our custom middleware
+    const store = createStore(reducers, response.data, applyMiddleware(sagaMiddleWare))
+    sagaMiddleWare.run(rootSaga);
 
-const action = type => store.dispatch({type});
+    const action = type => store.dispatch({type});
 
 
 
-ReactDOM.render(
-	<Provider store={store}>
-		<BrowserRouter>
-			<App/>
-		</BrowserRouter>
-	</Provider>,
-  document.getElementById('app'))
+    ReactDOM.render(
+    	<Provider store={store}>
+    		<BrowserRouter>
+    			<App/>
+    		</BrowserRouter>
+    	</Provider>,
+      document.getElementById('app'))    
+  });
+
+

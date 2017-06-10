@@ -1,23 +1,5 @@
 import React, { Component } from 'react';
-/*props {
-  item: {
-    ASIN: ''
-    DetailPageURL:
-    ItemAttributes: {
-      Title:
-      ProductGroup:
-      others...
-    },
-    ItemLinks: [AllCustomerReviews]
-  }
 
-  reviews - iframeURL
-
-}
-
--ItemAttributes is probably variable... how to solve
--just do books for now
-*/
 class AmazonItem extends Component {
   constructor (props) {
     super(props);
