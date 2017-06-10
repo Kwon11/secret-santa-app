@@ -11,31 +11,6 @@ var connection = mysql.createConnection({
   password: process.env.MYSQL_ROOT_PASSWORD,
   database: 'secretSanta'
 });
-app.use(express.static(path.join(__dirname, '../dist')));
-
-
-
-app.get('/Test', (req, res) => {
-  console.log(req.query.keywords);
-  var options = {
-    SearchIndex: 'All',
-    ResponseGroup: 'OfferSummary, ItemAttributes, Images',
-    Keywords: req.query.keywords
-  }
-  prodAdv.call("ItemSearch", options, function(err, result) {
-    res.send(result);
-  })
-})
-
-
-
-
-app.get('/InitialState', (req, res) => {
-
-})
-
-
-
 var firstCallPromise = function (activeUser) {
   return new Promise ((resolve, reject) => {
     connection.connect(error => {
@@ -48,16 +23,14 @@ var firstCallPromise = function (activeUser) {
     })
   });
 }
-
 var secondCallPromise = function (firstData, activeUser) { //returns a promise.all
   var userNamePromise = userNameCall(activeUser),
     userWishlistsPromise = userWishlistsCall(firstData),
     groupNamesPromise = groupNamesCall(firstData),
-    // targetNamesPromise = targetNamesCall(firstData)
+    targetNamesPromise = targetNamesCall(firstData),
     targetWishlistsPromise = targetWishlistsCall(firstData);
-  return Promise.all([userNamePromise, userWishlistsPromise, groupNamesPromise, targetWishlistsPromise]); 
+  return Promise.all([userNamePromise, groupNamesPromise, targetNamesPromise, userWishlistsPromise, targetWishlistsPromise]); 
 }
-
 var userNameCall = function (user_id) {
   return new Promise ((resolve, reject) => {
     connection.query(`SELECT name FROM users WHERE id=${user_id}`, (err, result) => {
@@ -68,7 +41,6 @@ var userNameCall = function (user_id) {
     })
   })
 }
-
 var targetWishlistsCall = function (data) {
   return convertToWishlist(data)
     .then((data) => {
@@ -103,9 +75,9 @@ var targetWishlistsCall = function (data) {
       console.log('error', err);
     })
 }
-function convertToWishlist(data) {
-    //we get the firstData object, we want to return an array of objects with group_id and wishlist-target
-    //for each element [i] of data, find the wishlist from group_id/target_id
+var convertToWishlist = (data) => {
+  //we get the firstData object, we want to return an array of objects with group_id and wishlist-target
+  //for each element [i] of data, find the wishlist from group_id/target_id
   return new Promise ((resolve, reject) => {
     var counter = 0, complete = data.length;
     var wishlistObject = [];
@@ -129,8 +101,7 @@ function convertToWishlist(data) {
     }    
   })
 }
-
-var userWishlistsCall = function (data) {
+var userWishlistsCall = (data) => {
   return new Promise ((resolve, reject) => {
     var complete = data.length;
     var userWishlistData = {};
@@ -157,8 +128,7 @@ var userWishlistsCall = function (data) {
     }
   })
 }
-
-var groupNamesCall = function (data) {
+var groupNamesCall = (data) => {
   var groupNameArray = [];
   return new Promise ((resolve, reject) => {
     //get all the group names, pair them with group_id;
@@ -184,14 +154,34 @@ var groupNamesCall = function (data) {
     }
   })
 }
-
-var targetNamesCall = function (data) {
-  
+var targetNamesCall = (data) => {
+  var targetNameArray = [];
+  return new Promise ((resolve, reject) => {
+    //get all the group names, pair them with group_id;
+    var counter = 0, complete = data.length;
+    for (var i = 0; i < data.length; i++) {
+      var x = (index) => {
+        connection.query(`SELECT name FROM users WHERE id=${data[index].target_id}`, (err, result) => {
+          counter++;
+          if (err) {
+            console.log('err 171', err);
+          }
+          targetNameArray.push({
+            group_id: data[index].group_id, //so its easy to insert into initialState
+            target_id: data[index].target_id,
+            targetName: result[0].name
+          })
+          if (counter === complete) {
+            resolve(targetNameArray);
+          }
+        })
+        
+      }
+      x(i);
+    }
+  })  
 }
-
-
-//firstData = [{} {} {}]
-var mainCall = function (activeUser) {
+var mainCall = (activeUser) => {
   return firstCallPromise(activeUser) //queries for group_id, target_id, wishlist
     .then((firstData) => secondCallPromise(firstData, activeUser))             //uses those to get groupNames, targetnames, targetwishlists, selfwishlist
     .then((values) => {           //use those to write to the initialData
@@ -204,11 +194,38 @@ var mainCall = function (activeUser) {
 }
 
 
-var test = mainCall(5);
-test.then((res) => {
-  console.log('test resolves to', res);
+// var test = mainCall(5);
+
+app.use(express.static(path.join(__dirname, '../dist')));
+
+app.get('/Test', (req, res) => {
+  console.log(req.query.keywords);
+  var options = {
+    SearchIndex: 'All',
+    ResponseGroup: 'OfferSummary, ItemAttributes, Images',
+    Keywords: req.query.keywords
+  }
+  prodAdv.call("ItemSearch", options, function(err, result) {
+    res.send(result);
+  })
 })
 
+app.get('/InitialState', (req, res) => {
+  var activeUser = 5;
+  mainCall(activeUser)
+    .then((result) => {
+      //construct here, then send result
+      //[0 -- username, 1 -- [{group_id and groupName}], 2 -- [{group_id, target_id, targetName}], 3 -- [{group_id: [items], group_id:[items]} userWishLIst],  4 --[same but for target]]
+      var initialState = {};
+      initialState.activeUser = result[0];
+      initialState.groups = {};
+      for (var i = 0; i < result[1].length; i++) {
+        initialState.groups[result[1][groupName]] = {
+          targetWishlist: result
+        }
+      }
+    }) //BUILD THE STATE AND SERVE
+})
 app.listen(3000, () => {
   console.log('express server is going 3000');
 })
