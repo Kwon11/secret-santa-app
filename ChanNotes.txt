@@ -14,6 +14,7 @@ MVP:
 (DONE) Express Server Set up
 
 { activeUser: 'aaaa',
+  activeUserId: 5
   groups:
    { '
       2': { 

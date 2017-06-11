@@ -15,6 +15,7 @@ class UserListView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('next props that if is', nextProps.groups[nextProps.location.search.slice(7)] )
     if (nextProps.groups[nextProps.location.search.slice(7)]) {
       this.setState({
         list: nextProps.groups[nextProps.location.search.slice(7)].userWishlist
@@ -23,6 +24,7 @@ class UserListView extends Component {
   }
 
   renderList () {
+    console.log('this.state.list in userlistview', this.state.list)
     return this.state.list.map((item, index) => {
       return (
           <AmazonItem key={item.ASIN} type={'REMOVE'} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId} item={item}/>
@@ -58,6 +60,6 @@ function mapStateToProps (state) {
   })
 }
 
-
+  
 
 export default connect(mapStateToProps)(UserListView);

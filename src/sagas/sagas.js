@@ -41,11 +41,12 @@ export function* watchAddWishlistCall () {
 }
 
 export function* modifyWishlist (action) {
-  const newList = yield call(databaseCall, action)
-
+  const newList = yield call(databaseCall, action);
+  
   yield put({
-    type: 'ITEM_ADD_SUCCESS',
-    newList: newList
+    type: 'NEW_WISHLIST',
+    newList: newList,
+    group_id: action.group_id
   })
 }
 
