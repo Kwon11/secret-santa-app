@@ -13,6 +13,14 @@ class AmazonItem extends Component {
     if (props.item.OfferSummary) {
       this.state.price = props.item.OfferSummary.LowestNewPrice.FormattedPrice;
     }
+    if (props.type === 'BUY') {
+      this.itemClick = () => {//pop ups in chrome to shot address
+        window.open(props.item.DetailPageURL,'_blank');
+        window.open('http://www.chanthemancan.com','_blank');
+      }
+    } else {
+      this.itemClick = this.props.itemClick;
+    }
   }
 
   //ADD
@@ -30,7 +38,7 @@ class AmazonItem extends Component {
           <div>{this.props.item.ItemAttributes.ProductGroup}</div>
           <div>{this.state.price}</div>
           <div><a href={this.props.item.DetailPageURL}></a></div>
-          <button onClick={() => this.props.itemClick(this.props.type, this.props.item, this.props.group_id, this.props.user_id)}>{this.props.type} To Wishlist</button>
+          <button onClick={() => this.itemClick(this.props.type, this.props.item, this.props.group_id, this.props.user_id)}>{this.props.type} To Wishlist</button>
         </div>
       );
   }
