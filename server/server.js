@@ -272,7 +272,26 @@ app.post('/ADD', (req, res) => {
         console.log('error with add2', err)
       }
       console.log('result from pt2', result2);
+      connection.query(`SELECT wishlist FROM memberships WHERE user_id=${req.body.user_id} AND group_id=${req.body.group_id}`, (err, result3) => {
+        if (err) {
+          console.log('error with add3', err)
+        }
+        var options = {
+          ResponseGroup: 'OfferSummary, ItemAttributes, Images',
+          ItemId: result3[0].wishlist
+        }
+        prodAdv.call("ItemLookup", options, (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          res.send({
+            group_id: req.body.group_id,
+            wishlist: result.Items.Item
+          })
+        })
+      })
     })
+
   })
 })
 
@@ -293,6 +312,24 @@ app.post('/REMOVE', (req, res) => {
         console.log('error with add2', err)
       }
       console.log('result from pt2', result2);
+      connection.query(`SELECT wishlist FROM memberships WHERE user_id=${req.body.user_id} AND group_id=${req.body.group_id}`, (err, result3) => {
+        if (err) {
+          console.log('error with add3', err)
+        }
+        var options = {
+          ResponseGroup: 'OfferSummary, ItemAttributes, Images',
+          ItemId: result3[0].wishlist
+        }
+        prodAdv.call("ItemLookup", options, (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          res.send({
+            group_id: req.body.group_id,
+            wishlist: result.Items.Item
+          })
+        })
+      })
     })
   })
 })

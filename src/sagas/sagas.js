@@ -56,8 +56,8 @@ function databaseCall(action) { //returns the newlist, which has to update the s
     item_id: action.item_id
   })
   .then((res) => {
-    console.log('successful add');
-    return res;
+    console.log('successful add/remove', res.data);
+    return res.data;
   })
   .catch((err) => {
     console.log('bad add', err);
