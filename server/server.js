@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 require('dotenv').config();
+var bodyParser = require('body-parser');
 var aws = require('aws-lib');
 var prodAdv = aws.createProdAdvClient(process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY, process.env.AWS_ASSOCIATE_TAG)
 var mysql = require('mysql');
@@ -207,6 +208,7 @@ var mainCall = (activeUser) => {
 // var test = mainCall(5);
 
 app.use(express.static(path.join(__dirname, '../dist')));
+app.use(bodyParser.json())
 
 app.get('/Test', (req, res) => {
   console.log(req.query.keywords);
@@ -229,6 +231,7 @@ app.get('/InitialState', (req, res) => {
       console.log('data from maincall', result);
       var initialState = {};
       initialState.activeUser = result[0];
+      initialState.activeUserId = activeUser;
       initialState.groups = {};
       for (var i = 0; i < result[1].length; i++) {
         initialState.groups[result[1][i].group_id] = {
@@ -254,6 +257,46 @@ app.get('/InitialState', (req, res) => {
       }
     }*/
 })
+
+app.post('/ADD', (req, res) => {
+  console.log('got post to add', req.body);
+  connection.query(`SELECT wishlist FROM memberships WHERE user_id=${req.body.user_id} AND group_id=${req.body.group_id}`,(error, result) => {
+    if (error) {
+      console.log('error with add', error);
+      res.sendStatus(200)
+    }
+    console.log('result from pt1', result);
+    var newWishlist = result[0].wishlist + `,${req.body.item_id}`;
+    connection.query(`UPDATE memberships SET wishlist = '${newWishlist}' WHERE user_id=${req.body.user_id} AND group_id=${req.body.group_id}`, (err, result2) => {
+      if (err) {
+        console.log('error with add2', err)
+      }
+      console.log('result from pt2', result2);
+    })
+  })
+})
+
+app.post('/REMOVE', (req, res) => {
+  console.log('REMOVE gets', req.body)
+    connection.query(`SELECT wishlist FROM memberships WHERE user_id=${req.body.user_id} AND group_id=${req.body.group_id}`,(error, result) => {
+    if (error) {
+      console.log('error with add', error);
+      res.sendStatus(200)
+    }
+    console.log('result from pt1', result);
+
+    var newWishlist = result[0].wishlist.replace(`${req.body.item_id},`,'');
+    newWishlist = newWishlist.replace(`${req.body.item_id}`,'');//this is the only step that is different
+
+    connection.query(`UPDATE memberships SET wishlist = '${newWishlist}' WHERE user_id=${req.body.user_id} AND group_id=${req.body.group_id}`, (err, result2) => {
+      if (err) {
+        console.log('error with add2', err)
+      }
+      console.log('result from pt2', result2);
+    })
+  })
+})
+
 app.listen(3000, () => {
   console.log('express server is going 3000');
 })

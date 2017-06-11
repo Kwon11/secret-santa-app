@@ -25,7 +25,7 @@ class UserListView extends Component {
   renderList () {
     return this.state.list.map((item, index) => {
       return (
-          <AmazonItem key={index} item={item}/>
+          <AmazonItem key={item.ASIN} type={'REMOVE'} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId} item={item}/>
         )
     });
   }
@@ -53,8 +53,11 @@ class UserListView extends Component {
 
 function mapStateToProps (state) {
   return ({
+    activeUserId: state.activeUserId,
     groups: state.groups //possibly state.groups[$match.url] type thing
   })
 }
+
+
 
 export default connect(mapStateToProps)(UserListView);

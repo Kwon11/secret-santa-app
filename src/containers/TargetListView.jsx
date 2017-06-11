@@ -6,7 +6,6 @@ class TargetListView extends Component {
   constructor(props) {
     super(props);
     if (this.props.groups[this.props.location.search.slice(7)]) {
-      console.log('this.props is', this.props)
       this.state = {
         list: this.props.groups[this.props.location.search.slice(7)].targetWishlist
       }
@@ -15,9 +14,7 @@ class TargetListView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('it received props', nextProps);
     if (nextProps.groups[nextProps.location.search.slice(7)]) {
-      console.log('nextprops.location.search is', nextProps.location.search);
       this.setState({
         list: nextProps.groups[nextProps.location.search.slice(7)].targetWishlist
       })
@@ -25,17 +22,15 @@ class TargetListView extends Component {
   }
 
   renderList () {//state is null here? why
-    console.log('this.state in renderlist', this.state)
     return this.state.list.map((item, index) => {
       return (
-          <AmazonItem key={index} item={item} />
+          <AmazonItem key={index} type={'BUY'} item={item} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId}/>
         )
     });
   }
 
   render () {
     if (this.props.groups[this.props.location.search.slice(7)]) {
-      console.log('so this is where it goes wrong', this.props)
       return (
           <div>
             <h3>{this.props.groups[this.props.location.search.slice(7)].targetName}'s Wishlist</h3>
@@ -56,6 +51,7 @@ class TargetListView extends Component {
 
 function mapStateToProps (state) {
   return ({
+    activeUserId: state.activeUserId,
     groups: state.groups //possibly state.groups[$match.url] type thing
   })
 }

@@ -13,3 +13,13 @@ export function itemSearch (keywords) {
     }
   }
 };
+
+export function itemClick (type, item, groupId, userId) {
+  console.log('item getting clicked', type, item.ASIN);
+  return {
+    type: type,
+    item_id: item.ASIN,
+    group_id: groupId,
+    user_id: userId
+  }
+}

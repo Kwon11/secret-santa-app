@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { itemClick } from '../actions/actions.js';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+//this.props.type: ['REMOVE', 'ADD', 'BUY']
 
 class AmazonItem extends Component {
   constructor (props) {
@@ -11,6 +15,13 @@ class AmazonItem extends Component {
     }
   }
 
+  //ADD
+  //REMOVE
+    //both are post requests with the item, and an action
+    //if 10, something.
+  //BUY
+
+
   render () {
     return (
         <div className="AmazonItem">
@@ -19,10 +30,16 @@ class AmazonItem extends Component {
           <div>{this.props.item.ItemAttributes.ProductGroup}</div>
           <div>{this.state.price}</div>
           <div><a href={this.props.item.DetailPageURL}></a></div>
-          <button>Add To Wishlist</button>
+          <button onClick={() => this.props.itemClick(this.props.type, this.props.item, this.props.group_id, this.props.user_id)}>{this.props.type} To Wishlist</button>
         </div>
       );
   }
 }
 
-export default AmazonItem;
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    itemClick: itemClick
+  }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(AmazonItem);

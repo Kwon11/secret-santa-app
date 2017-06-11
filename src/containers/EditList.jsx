@@ -26,7 +26,7 @@ class EditList extends Component {
       return 'Waiting for Amazon results!'
     } else if (nextProps.searchResult !== null) {
       this.state.list = nextProps.searchResult.map((item) => {
-        return <AmazonItem key={item.ASIN} item={item}/>
+        return <AmazonItem key={item.ASIN} type={'ADD'} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId} item={item}/>
       })
     }
   }
@@ -55,6 +55,7 @@ class EditList extends Component {
 
 const mapStateToProps = (state) => {
   return ({
+    activeUserId: state.activeUserId,
     groups: state.groups,
     searchResult: state.searchResult
   })

@@ -5,7 +5,10 @@ import axios from 'axios';
 
 export default function* rootSaga () {
   yield all([
-    watchAmazonCall()])
+    watchAmazonCall(),
+    watchAddWishlistCall(),
+    watchRemoveWishlistCall()
+    ])
 };
 
 export function* amazonCall (action) {
@@ -31,4 +34,36 @@ function apiCall(keywords) {
             console.log('error in apicall', error);
             return null;
           })
+}
+
+export function* watchAddWishlistCall () {
+  yield takeEvery('ADD', modifyWishlist);
+}
+
+export function* modifyWishlist (action) {
+  const newList = yield call(databaseCall, action)
+
+  yield put({
+    type: 'ITEM_ADD_SUCCESS',
+    newList: newList
+  })
+}
+
+function databaseCall(action) { //returns the newlist, which has to update the state
+  return axios.post(`/${action.type}`, {
+    group_id: action.group_id,
+    user_id: action.user_id,
+    item_id: action.item_id
+  })
+  .then((res) => {
+    console.log('successful add');
+    return res;
+  })
+  .catch((err) => {
+    console.log('bad add', err);
+  })
+}
+
+export function* watchRemoveWishlistCall () {
+  yield takeEvery('REMOVE', modifyWishlist);
 }
