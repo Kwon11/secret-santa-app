@@ -21,10 +21,19 @@ class TargetListView extends Component {
     }
   }
 
-  renderList () {//state is null here? why
+  renderList () {
+    console.log('this.state.list', this.state.list)
+    if (this.state.list === undefined) {
+      return <div> add items to your list to get started! </div>
+    }
+    if (this.state.list.length === undefined || this.state.list.length === 1) {
+      return (
+        <AmazonItem key={this.state.list.ASIN} type={'BUY'} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId} item={this.state.list}/>
+        )
+    }
     return this.state.list.map((item, index) => {
       return (
-          <AmazonItem key={index} type={'BUY'} item={item} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId}/>
+          <AmazonItem key={item.ASIN} type={'BUY'} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId} item={item}/>
         )
     });
   }

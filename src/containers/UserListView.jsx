@@ -15,7 +15,6 @@ class UserListView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('next props that if is', nextProps.groups[nextProps.location.search.slice(7)] )
     if (nextProps.groups[nextProps.location.search.slice(7)]) {
       this.setState({
         list: nextProps.groups[nextProps.location.search.slice(7)].userWishlist
@@ -24,7 +23,15 @@ class UserListView extends Component {
   }
 
   renderList () {
-    console.log('this.state.list in userlistview', this.state.list)
+    console.log('this.state.list', this.state.list)
+    if (this.state.list === undefined) {
+      return <div> add items to your list to get started! </div>
+    }
+    if (this.state.list.length === undefined || this.state.list.length === 1) {
+      return (
+        <AmazonItem key={this.state.list.ASIN} type={'REMOVE'} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId} item={this.state.list}/>
+        )
+    }
     return this.state.list.map((item, index) => {
       return (
           <AmazonItem key={item.ASIN} type={'REMOVE'} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId} item={item}/>
