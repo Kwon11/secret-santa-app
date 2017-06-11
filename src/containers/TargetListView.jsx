@@ -24,7 +24,7 @@ class TargetListView extends Component {
   renderList () {
     console.log('this.state.list', this.state.list)
     if (this.state.list === undefined) {
-      return <div> add items to your list to get started! </div>
+      return <div> Your receipient has yet to add items to their list! </div>
     }
     if (this.state.list.length === undefined || this.state.list.length === 1) {
       return (

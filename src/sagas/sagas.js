@@ -42,7 +42,6 @@ export function* watchAddWishlistCall () {
 
 export function* modifyWishlist (action) {
   const newList = yield call(databaseCall, action);
-  
   yield put({
     type: 'NEW_WISHLIST',
     newList: newList,
