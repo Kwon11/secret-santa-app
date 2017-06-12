@@ -23,6 +23,10 @@ MVP:
             target_id: 7,
             targetWishlist: [Object],
             userWishlist: [Object] 
+            date_assign:
+            date_due:
+            location:
+            description:
           },
      '3': { 
             groupname: 'Cats',
