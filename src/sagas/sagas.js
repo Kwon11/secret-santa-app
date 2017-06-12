@@ -7,7 +7,8 @@ export default function* rootSaga () {
   yield all([
     watchAmazonCall(),
     watchAddWishlistCall(),
-    watchRemoveWishlistCall()
+    watchRemoveWishlistCall(),
+    watchGroupAssignCall()
     ])
 };
 
@@ -66,4 +67,21 @@ function databaseCall(action) { //returns the newlist, which has to update the s
 
 export function* watchRemoveWishlistCall () {
   yield takeEvery('REMOVE', modifyWishlist);
+}
+
+export function* watchGroupAssignCall () {
+  yield takeEvery('ASSIGN', groupAssign);
+}
+
+function groupAssign (action) {
+  return axios.post('/ASSIGN', {
+    group_id: action.group_id
+  })
+  .then ((res) => {
+    console.log('successful post call assin', res);
+  })
+  .catch ((err) => {
+    console.log('err post call assign', err)
+  })
+
 }

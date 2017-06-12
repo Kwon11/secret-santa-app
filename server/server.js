@@ -19,7 +19,7 @@ connection.connect(error => {
     console.log('connected mysql');
   }
 });
-
+var groupAssign = require('./groupAssign.js');
 
 var firstCallPromise = function (activeUser) {
   return new Promise ((resolve, reject) => {
@@ -146,13 +146,16 @@ var groupNamesCall = (data) => {
     var counter = 0, complete = data.length;
     for (var i = 0; i < data.length; i++) {
       var x = (index) => {
-        connection.query(`SELECT name FROM groups WHERE id=${data[index].group_id}`, (err, result) => {
+        connection.query(`SELECT name, location, date_assign, date_due FROM groups WHERE id=${data[index].group_id}`, (err, result) => {
           counter++;
           if (err) {
             console.log('err 171', err);
           }
           groupNameArray.push({
             group_id: data[index].group_id,
+            location: result[0].location,
+            date_assign: result[0].date_assign,
+            date_due: result[0].date_due,
             groupName: result[0].name
           })
           if (counter === complete) {
@@ -235,7 +238,10 @@ app.get('/InitialState', (req, res) => {
       initialState.groups = {};
       for (var i = 0; i < result[1].length; i++) {
         initialState.groups[result[1][i].group_id] = {
-          groupname: result[1][i].groupName
+          groupname: result[1][i].groupName,
+          location: result[1][i].location,
+          date_assign: result[1][i].date_assign,
+          date_due: result[1][i].date_due
         }
       } //now it has groupName
       //now it has target_id and targetName in each group
@@ -244,6 +250,7 @@ app.get('/InitialState', (req, res) => {
         initialState.groups[result[2][i].group_id].target_id = result[2][i].target_id;
         initialState.groups[result[3][i].group_id].userWishlist = result[3][i].wishlist;
         initialState.groups[result[4][i].group_id].targetWishlist = result[4][i].wishlist
+
       }
       console.log('final initialstate', initialState);
       res.send(initialState);
@@ -332,6 +339,16 @@ app.post('/REMOVE', (req, res) => {
       })
     })
   })
+})
+
+app.post('/ASSIGN', (req, res) => {
+  console.log('req.body', req.body);
+  var targetGroup = req.body.group_id;
+  var serverSide = groupAssign(targetGroup, connection);
+  serverSide.then((res) => {
+    console.log('serverSide', res);
+  })
+  res.sendStatus(100);
 })
 
 app.listen(3000, () => {

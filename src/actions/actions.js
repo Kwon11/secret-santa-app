@@ -23,3 +23,11 @@ export function itemClick (type, item, groupId, userId) {
     user_id: userId
   }
 }
+
+export function assign (group_id) {
+  console.log('func assign getting call', group_id);
+  return {
+    type: 'ASSIGN',
+    group_id: group_id
+  }
+}
