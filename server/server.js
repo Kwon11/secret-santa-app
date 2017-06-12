@@ -37,7 +37,9 @@ app.get('/InitialState', (req, res) => {
           groupname: result[1][i].groupName,
           location: result[1][i].location,
           date_assign: result[1][i].date_assign,
-          date_due: result[1][i].date_due
+          date_due: result[1][i].date_due,
+          admin: result[1][i].admin,
+          accepted: result[1][i].accepted
         }
       } 
       for (var i = 0; i < result[1].length; i++) {
@@ -143,6 +145,22 @@ app.post('/ACCEPT', (req, res) => {
   console.log('req.body for accept', req.body);
   connection.query(`UPDATE memberships SET accepted=true WHERE user_id=${req.body.user_id} and group_id=${req.body.group_id}`, (err, result) => {
     res.sendStatus(100);
+  })
+})
+
+app.post('/INVITE', (req, res) => {
+  console.log('req.body for invite', req.body);
+  connection.query(`SELECT * FROM memberships WHERE user_id=${req.body.user_id} AND group_id=${req.body.group_id}`, (err, result) => {
+    if (result[0] === undefined ) {
+      connection.query(`INSERT INTO memberships SET user_id=${req.body.user_id}, group_id=${req.body.group_id}, accepted=false, admin=false`, (err, result2) => {
+        if (err) {
+          console.log('err with insert new invite', err);
+          res.sendStatus(200);
+        }
+        console.log('successful insert');
+        res.sendStatus(100);
+      })
+    }
   })
 })
 

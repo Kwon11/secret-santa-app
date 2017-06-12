@@ -3,7 +3,7 @@ var prodAdv = require('./awsAPI.js');
 
 var firstCallPromise = function (activeUser) {
   return new Promise ((resolve, reject) => {
-      connection.query(`SELECT group_id, target_id, wishlist, accepted FROM memberships WHERE user_id=${activeUser}`, (err, result) => {
+      connection.query(`SELECT group_id, target_id, wishlist, accepted, admin FROM memberships WHERE user_id=${activeUser}`, (err, result) => {
         resolve(result);
       })
   });
@@ -165,7 +165,9 @@ var groupNamesCall = (data) => {
             location: result[0].location,
             date_assign: result[0].date_assign,
             date_due: result[0].date_due,
-            groupName: result[0].name
+            groupName: result[0].name,
+            accepted: data[index].accepted,
+            admin: data[index].admin
           })
           if (counter === complete) {
             resolve(groupNameArray);

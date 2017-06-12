@@ -9,7 +9,8 @@ export default function* rootSaga () {
     watchAddWishlistCall(),
     watchRemoveWishlistCall(),
     watchGroupAssignCall(),
-    watchGroupAccept()
+    watchGroupAccept(),
+    watchInvite()
     ])
 };
 
@@ -101,5 +102,22 @@ function acceptCall (action) {
   })
   .catch((err) => {
     console.log('err in accept')
+  })
+}
+
+export function* watchInvite () {
+  yield takeEvery('INVITE', inviteCall);
+}
+
+function inviteCall (action) {
+  axios.post('/INVITE', {
+    user_id: action.user_id,
+    group_id: action.group_id
+  })
+  .then((res) => {
+    console.log('success invite', res);
+  })
+  .catch((err) => {
+    console.log('err in invitecall', err);
   })
 }

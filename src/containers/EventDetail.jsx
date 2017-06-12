@@ -30,7 +30,7 @@ class EventDetail extends Component {
   render () {
     console.log('render state.selectedGroup', this.state.selectedGroup);
     if (this.state.selectedGroup) {
-      if (this.props.groups[this.state.selectedGroup].accepted === true) {
+      if (this.props.groups[this.state.selectedGroup].accepted === 1 && this.props.groups[this.state.selectedGroup].admin === 1) {
         return (
             <div>
               <h3>Detail for Event {this.props.groups[this.state.selectedGroup].groupname}</h3>
@@ -40,6 +40,17 @@ class EventDetail extends Component {
               <div>You will all meet  {this.props.groups[this.state.selectedGroup].location}</div>
               <div> HAVE A HAPPY HOLIDAY! </div>
               <button onClick={() => this.props.assign(this.state.selectedGroup)}> ASSIGN GIFTEES! </button>
+            </div>
+          )
+      } else if (this.props.groups[this.state.selectedGroup].accepted === 1) {
+        return (
+            <div>
+              <h3>Detail for Event {this.props.groups[this.state.selectedGroup].groupname}</h3>
+              <div>Event name </div>
+              <div>Gifters and Giftees are assigned {this.props.groups[this.state.selectedGroup].date_assign}</div>
+              <div>Gifts should be purchased by  {this.props.groups[this.state.selectedGroup].date_due}</div>
+              <div>You will all meet  {this.props.groups[this.state.selectedGroup].location}</div>
+              <div> HAVE A HAPPY HOLIDAY! </div>
             </div>
           )
       } else {

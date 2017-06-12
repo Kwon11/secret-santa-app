@@ -40,3 +40,12 @@ export function accept (group_id, activeUser) {
     group_id: group_id
   }
 }
+
+export function invite (user_id, group_id) {
+  console.log('invite getting called', user_id, group_id);
+  return {
+    type: 'INVITE',
+    user_id: user_id,
+    group_id: group_id
+  };
+}
