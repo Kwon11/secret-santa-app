@@ -1,4 +1,6 @@
-module.exports = function groupAssign (group_id, connection) {
+var connection = require('./db.js');
+
+module.exports = function groupAssign (group_id) {
   console.log('group assign got caled like this biiitch');
   //get all members from group
   //push each of their id into an array
