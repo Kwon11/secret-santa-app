@@ -81,7 +81,6 @@ var convertToWishlist = (data) => {
   return new Promise ((resolve, reject) => {
     var counter = 0, complete = data.length;
     var wishlistObject = [];
-    console.log('the data given is', data);
     for (var i = 0; i < data.length; i++) {
       var x = (index, data) => {
         connection.query(`SELECT wishlist,accepted FROM memberships WHERE user_id=${data[index].target_id} AND group_id=${data[index].group_id}`, (err, result) => {
@@ -123,6 +122,7 @@ var userWishlistsCall = (data) => {
     var counter = 0;
     for (var i = 0; i < data.length; i++) {
       function amazonBatchCall (index) {
+        console.log('amazonbatchcalled for ', index, data[index].wishlist);
         var options = {
 
           ResponseGroup: 'OfferSummary, ItemAttributes, Images',
@@ -131,6 +131,7 @@ var userWishlistsCall = (data) => {
         prodAdv.call("ItemLookup", options, (err, result) => {
           counter++;
           if (err) {
+            console.log('err with index', index, err);
             reject(err);
           }
           userWishlistData.push({
@@ -138,6 +139,7 @@ var userWishlistsCall = (data) => {
             wishlist: result.Items.Item
           })
           if (counter === complete) {
+            console.log('userwishlist data for', index, userWishlistData);
             resolve(userWishlistData);
           }
         })

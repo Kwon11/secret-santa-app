@@ -8,7 +8,8 @@ export default function* rootSaga () {
     watchAmazonCall(),
     watchAddWishlistCall(),
     watchRemoveWishlistCall(),
-    watchGroupAssignCall()
+    watchGroupAssignCall(),
+    watchGroupAccept()
     ])
 };
 
@@ -87,9 +88,18 @@ function groupAssign (action) {
 }
 
 export function* watchGroupAccept() {
-  yield takeEvery('ACCEPT', acceptCall)
+  yield takeEvery('ACCEPT', acceptCall);
 }
 
 function acceptCall (action) {
-  
+  return axios.post('/ACCEPT', {
+    group_id: action.group_id,
+    user_id: action.user_id
+  })
+  .then((res) => {
+    console.log('successful post to accept', res)
+  })
+  .catch((err) => {
+    console.log('err in accept')
+  })
 }

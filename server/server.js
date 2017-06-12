@@ -28,7 +28,6 @@ app.get('/InitialState', (req, res) => {
   mainCall(activeUser)
     .then((result) => {
       //[0 -- username, 1 -- [{group_id and groupName}], 2 -- [{group_id, target_id, targetName}], 3 -- [{group_id: group_id, wishlist: []}] userWishLIst],  4 --[same but for target]]
-      console.log('data from maincall', result);
       var initialState = {};
       initialState.activeUser = result[0];
       initialState.activeUserId = activeUser;
@@ -48,7 +47,6 @@ app.get('/InitialState', (req, res) => {
         initialState.groups[result[4][i].group_id].targetWishlist = result[4][i].wishlist
 
       }
-      console.log('final initialstate', initialState);
       res.send(initialState);
     }) 
 })
@@ -60,7 +58,6 @@ app.post('/ADD', (req, res) => {
       console.log('error with add', error);
       res.sendStatus(200)
     }
-    console.log('result from pt1', result);
     if (result[0].wishlist.length === 0) {
       var newWishlist = result[0].wishlist + `${req.body.item_id}`;  
     } else {
@@ -95,7 +92,6 @@ app.post('/ADD', (req, res) => {
 })
 
 app.post('/REMOVE', (req, res) => {
-  console.log('REMOVE gets', req.body)
     connection.query(`SELECT wishlist FROM memberships WHERE user_id=${req.body.user_id} AND group_id=${req.body.group_id}`,(error, result) => {
     if (error) {
       console.log('error with add', error);
@@ -141,6 +137,13 @@ app.post('/ASSIGN', (req, res) => {
     console.log('serverSide', res);
   })
   res.sendStatus(100);
+})
+
+app.post('/ACCEPT', (req, res) => {
+  console.log('req.body for accept', req.body);
+  connection.query(`UPDATE memberships SET accepted=true WHERE user_id=${req.body.user_id} and group_id=${req.body.group_id}`, (err, result) => {
+    res.sendStatus(100);
+  })
 })
 
 app.listen(3000, () => {
