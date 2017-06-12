@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { assign } from '../actions/actions.js';
+import { assign, accept } from '../actions/actions.js';
 import { bindActionCreators } from 'redux';
 
 class EventDetail extends Component {
@@ -30,17 +30,33 @@ class EventDetail extends Component {
   render () {
     console.log('render state.selectedGroup', this.state.selectedGroup);
     if (this.state.selectedGroup) {
-      return (
+      if (this.props.groups[this.state.selectedGroup].accepted === true) {
+        return (
+            <div>
+              <h3>Detail for Event {this.props.groups[this.state.selectedGroup].groupname}</h3>
+              <div>Event name </div>
+              <div>Gifters and Giftees are assigned {this.props.groups[this.state.selectedGroup].date_assign}</div>
+              <div>Gifts should be purchased by  {this.props.groups[this.state.selectedGroup].date_due}</div>
+              <div>You will all meet  {this.props.groups[this.state.selectedGroup].location}</div>
+              <div> HAVE A HAPPY HOLIDAY! </div>
+              <button onClick={() => this.props.assign(this.state.selectedGroup)}> ASSIGN GIFTEES! </button>
+            </div>
+          )
+      } else {
+        return (
           <div>
+            <div> You have not yet accepted this group invitation! 
+              <button onClick={() => this.props.accept(this.state.selectedGroup, this.props.activeUserId)}> Click here to accept this invitation! </button> 
+            </div>
             <h3>Detail for Event {this.props.groups[this.state.selectedGroup].groupname}</h3>
-            <div>Event name </div>
-            <div>Gifters and Giftees are assigned {this.props.groups[this.state.selectedGroup].date_assign}</div>
-            <div>Gifts should be purchased by  {this.props.groups[this.state.selectedGroup].date_due}</div>
-            <div>You will all meet  {this.props.groups[this.state.selectedGroup].location}</div>
-            <div> HAVE A HAPPY HOLIDAY! </div>
-            <button onClick={() => this.props.assign(this.state.selectedGroup)}> ASSIGN GIFTEES! </button>
+              <div>Event name </div>
+              <div>Gifters and Giftees are assigned {this.props.groups[this.state.selectedGroup].date_assign}</div>
+              <div>Gifts should be purchased by  {this.props.groups[this.state.selectedGroup].date_due}</div>
+              <div>You will all meet  {this.props.groups[this.state.selectedGroup].location}</div>
+              <div> HAVE A HAPPY HOLIDAY! </div>
           </div>
-        )
+          )
+      }
     }
     return <div> select a group! </div>
   }
@@ -49,13 +65,15 @@ class EventDetail extends Component {
 
 function mapStateToProps (state) {
   return ({
+    activeUserId: state.activeUserId,
     groups: state.groups //possibly state.groups[$match.url] type thing
   })
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    assign: assign
+    assign: assign,
+    accept: accept
   }, dispatch)
 }
 

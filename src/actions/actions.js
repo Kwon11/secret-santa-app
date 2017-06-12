@@ -31,3 +31,12 @@ export function assign (group_id) {
     group_id: group_id
   }
 }
+
+export function accept (group_id, activeUser) {
+  console.log('func accept getting call', );
+  return {
+    type: 'ACCEPT',
+    user_id: activeUser,
+    group_id: group_id
+  }
+}

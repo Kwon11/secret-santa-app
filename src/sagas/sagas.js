@@ -85,3 +85,11 @@ function groupAssign (action) {
   })
 
 }
+
+export function* watchGroupAccept() {
+  yield takeEvery('ACCEPT', acceptCall)
+}
+
+function acceptCall (action) {
+  
+}

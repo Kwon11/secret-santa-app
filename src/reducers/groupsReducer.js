@@ -9,7 +9,7 @@ export default function groupsReducer(state='random string bitch', action) {
       console.log('we got the newishlit item', action.newList);
       console.log('state here is', state);
       var newState = {...state};
-      newState[action.newList.group_id].userWishlist = action.newList.wishlist;
+      newState[action.group_id].userWishlist = action.newList.wishlist;
       console.log('newstate returning is', newState);
       return newState;
     default:
