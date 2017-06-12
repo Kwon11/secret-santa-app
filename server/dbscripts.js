@@ -28,5 +28,3 @@ var recurse = (index) => {
     }
   })
 }
-
-recurse(1);

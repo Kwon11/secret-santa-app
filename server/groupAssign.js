@@ -5,7 +5,7 @@ module.exports = function groupAssign (group_id, connection) {
   //random number * length, remove from array as they are chosen
   //update them on mysql database
   return new Promise ((resolve, reject) => {
-    connection.query(`SELECT user_id FROM memberships WHERE group_id=${group_id}`, (err, result) => {
+    connection.query(`SELECT user_id FROM memberships WHERE group_id=${group_id} AND accepted=true`, (err, result) => {
       if (err) {
         console.log('error getting user_id from groups', err);
       }

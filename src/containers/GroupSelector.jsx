@@ -19,6 +19,9 @@ class GroupSelector extends Component {
 
   renderList() {
     const list = [];
+    list.push(
+        <li key={'invitations'} className="GroupMenuLink"><Link to='/Invitations'>Invitations</Link></li>
+      )
     for (var key in this.props.groups) {
       list.push(
         <li key={key} className="GroupMenuLink" onClick={this.handleClick}><Link to={`${this.props.location.pathname}?group=${key}`}>{this.props.groups[key].groupname}</Link></li>

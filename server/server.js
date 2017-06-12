@@ -89,6 +89,7 @@ var convertToWishlist = (data) => {
   return new Promise ((resolve, reject) => {
     var counter = 0, complete = data.length;
     var wishlistObject = [];
+    console.log('the data given is', data);
     for (var i = 0; i < data.length; i++) {
       var x = (index, data) => {
         connection.query(`SELECT wishlist FROM memberships WHERE user_id=${data[index].target_id} AND group_id=${data[index].group_id}`, (err, result) => {
@@ -96,6 +97,7 @@ var convertToWishlist = (data) => {
           if (err) {
             console.log('err', err);
           }
+          console.log('line 99 result', result);
           wishlistObject.push({
             group_id: data[index].group_id,
             wishlist: result[0].wishlist
@@ -273,7 +275,11 @@ app.post('/ADD', (req, res) => {
       res.sendStatus(200)
     }
     console.log('result from pt1', result);
-    var newWishlist = result[0].wishlist + `,${req.body.item_id}`;
+    if (result[0].wishlist.length === 0) {
+      var newWishlist = result[0].wishlist + `${req.body.item_id}`;  
+    } else {
+      var newWishlist = result[0].wishlist + `,${req.body.item_id}`;
+    }
     connection.query(`UPDATE memberships SET wishlist = '${newWishlist}' WHERE user_id=${req.body.user_id} AND group_id=${req.body.group_id}`, (err, result2) => {
       if (err) {
         console.log('error with add2', err)

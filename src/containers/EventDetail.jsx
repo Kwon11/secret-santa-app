@@ -11,7 +11,7 @@ class EventDetail extends Component {
       selectedGroup: null
     };
     if (props.groups[props.location.search.slice(7)]) {
-      this.setState = {
+      this.state = {
         selectedGroup: props.location.search.slice(7),
       }
     }
