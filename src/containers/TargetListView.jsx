@@ -26,7 +26,10 @@ class TargetListView extends Component {
     if (this.state.list === undefined) {
       return <div> Your receipient has yet to add items to their list! </div>
     }
-    if (this.state.list.length === undefined || this.state.list.length === 1) {
+    if (typeof this.state.list === 'string') {
+      console.log('recognize its a string');
+      return <div> {this.state.list}</div>
+    } else if (this.state.list.length === 1) {
       return (
         <AmazonItem key={this.state.list.ASIN} type={'BUY'} group_id={this.props.location.search.slice(7)} user_id={this.props.activeUserId} item={this.state.list}/>
         )

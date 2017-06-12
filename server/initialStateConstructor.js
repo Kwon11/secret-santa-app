@@ -3,7 +3,7 @@ var prodAdv = require('./awsAPI.js');
 
 var firstCallPromise = function (activeUser) {
   return new Promise ((resolve, reject) => {
-      connection.query(`SELECT group_id, target_id, wishlist FROM memberships WHERE user_id=${activeUser}`, (err, result) => {
+      connection.query(`SELECT group_id, target_id, wishlist, accepted FROM memberships WHERE user_id=${activeUser}`, (err, result) => {
         resolve(result);
       })
   });
@@ -55,7 +55,19 @@ var targetWishlistsCall = function (data) {
                 }
               })
             }
-            amazonBatchCall(i);
+            if (data[i].accepted === 1) {
+              console.log('targetwishlistcall line 59 goes true')
+              amazonBatchCall(i);
+            } else {
+              counter++;
+              userWishlistData.push({
+                group_id: data[i].group_id,
+                wishlist: 'Wishlist not yet built or targets not yet assigned!'
+              })
+              if (counter === complete) {
+                  resolve(userWishlistData);
+              }
+            }
           }
         })
     })
@@ -72,7 +84,7 @@ var convertToWishlist = (data) => {
     console.log('the data given is', data);
     for (var i = 0; i < data.length; i++) {
       var x = (index, data) => {
-        connection.query(`SELECT wishlist FROM memberships WHERE user_id=${data[index].target_id} AND group_id=${data[index].group_id}`, (err, result) => {
+        connection.query(`SELECT wishlist,accepted FROM memberships WHERE user_id=${data[index].target_id} AND group_id=${data[index].group_id}`, (err, result) => {
           counter++;
           if (err) {
             console.log('err', err);
@@ -80,14 +92,27 @@ var convertToWishlist = (data) => {
           console.log('line 99 result', result);
           wishlistObject.push({
             group_id: data[index].group_id,
-            wishlist: result[0].wishlist
+            wishlist: result[0].wishlist,
+            accepted: data[index].accepted
           })
           if (counter === complete) {
             resolve(wishlistObject);
           }
         })
       }
-      x(i, data);
+      if (data[i].target_id) {
+        x(i, data);
+      } else {
+        counter++;
+        wishlistObject.push({
+          group_id: data[i].group_id,
+          wishlist: 'Targets not yet assigned!',
+          accepted: false
+        })
+        if (counter === complete) {
+            resolve(wishlistObject);
+        }
+      }
     }    
   })
 }
@@ -173,7 +198,19 @@ var targetNamesCall = (data) => {
         })
         
       }
-      x(i);
+      if (data[i].target_id !== null && data[i].target_id !== undefined) {
+        x(i);
+      } else {
+        counter++;
+        targetNameArray.push({
+          group_id: data[i].group_id,
+          target_id: null,
+          targetName: 'Targets not yet assigned!'
+        })
+        if (counter === complete) {
+            resolve(targetNameArray);
+        }
+      }
     }
   })  
 }

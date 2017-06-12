@@ -11,7 +11,11 @@ class AmazonItem extends Component {
       price: 'Price Summary not available, visit the main link'
     }
     if (props.item.OfferSummary) {
-      this.state.price = props.item.OfferSummary.LowestNewPrice.FormattedPrice;
+      if (props.item.OfferSummary.LowestNewPrice) {
+        this.state.price = props.item.OfferSummary.LowestNewPrice.FormattedPrice;
+      } else {
+        this.state.price = 'Price summary unavailable';
+      }
     }
     if (props.type === 'BUY') {
       this.itemClick = () => {//pop ups in chrome to shot address
