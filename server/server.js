@@ -7,9 +7,28 @@ var connection = require('./db.js');
 var mainCall = require('./initialStateConstructor.js');
 var groupAssign = require('./groupAssign.js');
 var prodAdv = require('./awsAPI.js');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+
+// passport.use(new FacebookStrategy({
+//     clientID: 
+//     clientSecret:
+//     callbackURL: "http://localhost:3000/"
+//   }, 
+//   function(accessToken, refreshToken, profile, cb) {
+//     User.findOrCreate({facebookId: profile.id}, function (err, user) {
+//       return cb(err, user);
+//     })
+//   }
+// ));
 
 app.use(express.static(path.join(__dirname, '../dist')));
 app.use(bodyParser.json())
+
+app.post('/Login', (req, res) => {
+
+})
+
 
 app.get('/Test', (req, res) => {
   console.log(req.query.keywords);

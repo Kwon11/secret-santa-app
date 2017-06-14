@@ -49,3 +49,7 @@ export function invite (user_id, group_id) {
     group_id: group_id
   };
 }
+
+export function facebook () {
+  console.log('facebook');
+}

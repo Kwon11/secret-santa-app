@@ -42,7 +42,7 @@ class Settings extends Component {
 
 function mapStateToProps (state) {
   return ({
-    activeUserId: activeUserId
+    activeUserId: state.activeUserId,
     groups: state.groups //possibly state.groups[$match.url] type thing
   })
 }

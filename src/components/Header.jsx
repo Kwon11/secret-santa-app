@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import GroupSelector from '../containers/GroupSelector.jsx';
 import { Route } from 'react-router-dom';
-
+import Facebook from './Facebook.jsx';
 
 /*
 DropdownTrigger: The element that will cause your dropdown to appear when clicked.
@@ -12,10 +12,11 @@ Dropdown: The base element for your dropdown. This contains both the DropdownTri
 export default class Header extends Component {
 
 	render() {
-		return (
-			<nav className="Header">
-				<Route path="/" component={GroupSelector}/>
-			</nav>
-		)
+    return (
+      <nav className="Header">
+        <Facebook />
+        <Route path="/" component={GroupSelector}/>
+      </nav>
+    )
 	}
 }

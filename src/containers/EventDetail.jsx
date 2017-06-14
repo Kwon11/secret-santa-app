@@ -34,7 +34,7 @@ class EventDetail extends Component {
         return (
             <div>
               <h3>Detail for Event {this.props.groups[this.state.selectedGroup].groupname}</h3>
-              <div>Event name </div>
+              <div>Event name {this.props.groups[this.state.selectedGroup].groupname}</div>
               <div>Gifters and Giftees are assigned {this.props.groups[this.state.selectedGroup].date_assign}</div>
               <div>Gifts should be purchased by  {this.props.groups[this.state.selectedGroup].date_due}</div>
               <div>You will all meet  {this.props.groups[this.state.selectedGroup].location}</div>
