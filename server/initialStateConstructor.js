@@ -4,11 +4,24 @@ var prodAdv = require('./awsAPI.js');
 var firstCallPromise = function (activeUser) {
   return new Promise ((resolve, reject) => {
       connection.query(`SELECT group_id, target_id, wishlist, accepted, admin FROM memberships WHERE user_id=${activeUser}`, (err, result) => {
+        console.log('7', result);
+        if (result[0] === undefined) {
+          resolve('empty user')
+        }
         resolve(result);
       })
   });
 }
 var secondCallPromise = function (firstData, activeUser) { //returns a promise.all
+  if (firstData === 'empty user') {
+    var userNamePromise = userNameCall(activeUser),
+    userWishlistsPromise = 0,
+    groupNamesPromise = 0,
+    targetNamesPromise = 0,
+    targetWishlistsPromise = 0;
+
+    return Promise.all([userNamePromise, groupNamesPromise, targetNamesPromise, userWishlistsPromise, targetWishlistsPromise]);
+  }
   var userNamePromise = userNameCall(activeUser),
     userWishlistsPromise = userWishlistsCall(firstData),
     groupNamesPromise = groupNamesCall(firstData),
@@ -216,9 +229,12 @@ var targetNamesCall = (data) => {
 }
 
 var mainCall = (activeUser) => {
+  console.log('219');
   return firstCallPromise(activeUser) //queries for group_id, target_id, wishlist
     .then((firstData) => secondCallPromise(firstData, activeUser))             //uses those to get groupNames, targetnames, targetwishlists, selfwishlist
-    .then((values) => {           //use those to write to the initialData
+    .then((values) => {    
+      console.log('222', values);
+           //use those to write to the initialData
       //construct state with all the values, then return that out of mainCall();
       return values;
     })

@@ -45,7 +45,7 @@ class EditList extends Component {
               <input value={this.state.searchTerm} className="searchBar" onChange={this.handleChange} placeholder="Search for an Item!"></input>
             </form>
           </h3>
-          <ul className="WishList">
+          <ul className="Wishlist">
             {this.state.list}
           </ul>
         </div>

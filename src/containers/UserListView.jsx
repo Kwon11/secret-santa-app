@@ -45,7 +45,7 @@ class UserListView extends Component {
           <div>
             <h3>Your list for {this.props.groups[this.props.location.search.slice(7)].groupname} </h3>
             <Link to={`/EditList${this.props.location.search}`} className="addItemsButton">Add Items </Link>
-            <ul>
+            <ul className="Wishlist">
               {this.renderList()}
             </ul>
           </div>

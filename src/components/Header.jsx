@@ -15,6 +15,7 @@ export default class Header extends Component {
     return (
       <nav className="Header">
         <Facebook />
+        <div className="title">Secret Santa</div>
         <Route path="/" component={GroupSelector}/>
       </nav>
     )

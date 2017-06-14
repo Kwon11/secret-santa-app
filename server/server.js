@@ -39,24 +39,30 @@ app.get('/InitialState', (req, res) => {
       initialState.activeUser = result[0];
       initialState.activeUserId = activeUser;
       initialState.groups = {};
-      for (var i = 0; i < result[1].length; i++) {
-        initialState.groups[result[1][i].group_id] = {
-          groupname: result[1][i].groupName,
-          location: result[1][i].location,
-          date_assign: result[1][i].date_assign,
-          date_due: result[1][i].date_due,
-          admin: result[1][i].admin,
-          accepted: result[1][i].accepted
-        }
-      } 
-      for (var i = 0; i < result[1].length; i++) {
-        initialState.groups[result[2][i].group_id].targetName = result[2][i].targetName;
-        initialState.groups[result[2][i].group_id].target_id = result[2][i].target_id;
-        initialState.groups[result[3][i].group_id].userWishlist = result[3][i].wishlist;
-        initialState.groups[result[4][i].group_id].targetWishlist = result[4][i].wishlist
+      console.log('42', result);
+      if (result[1] === 0) {
+        initialState.groups = 0;
+        res.send(initialState);
+      } else {
+        for (var i = 0; i < result[1].length; i++) {
+          initialState.groups[result[1][i].group_id] = {
+            groupname: result[1][i].groupName,
+            location: result[1][i].location,
+            date_assign: result[1][i].date_assign,
+            date_due: result[1][i].date_due,
+            admin: result[1][i].admin,
+            accepted: result[1][i].accepted
+          }
+        } 
+        for (var i = 0; i < result[1].length; i++) {
+          initialState.groups[result[2][i].group_id].targetName = result[2][i].targetName;
+          initialState.groups[result[2][i].group_id].target_id = result[2][i].target_id;
+          initialState.groups[result[3][i].group_id].userWishlist = result[3][i].wishlist;
+          initialState.groups[result[4][i].group_id].targetWishlist = result[4][i].wishlist
 
+        }
+        res.send(initialState);
       }
-      res.send(initialState);
     }) 
 })
 

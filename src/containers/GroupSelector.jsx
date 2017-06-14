@@ -28,7 +28,17 @@ class GroupSelector extends Component {
   }
 
   render () {
-
+    if (this.props.groups === 0) {
+      return (
+        <Dropdown className="GroupSelector">
+          <DropdownTrigger className="GroupTrigger">CurrentGroup</DropdownTrigger>
+          <DropdownContent className="GroupMenu">
+            <img onClick={this.handleClick} src="./LiamNeesons.jpg" style={this.temporaryStyle}></img>
+             <div> START A NEW GROUP FROM SETTINGS!</div>
+          </DropdownContent>
+        </Dropdown>
+        )
+    }
     return (
         <Dropdown className="GroupSelector">
           <DropdownTrigger className="GroupTrigger">CurrentGroup</DropdownTrigger>

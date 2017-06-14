@@ -4,15 +4,15 @@ import { facebook } from "../actions/actions.js";
 import React from 'react';
 
 const Facebook = ({ dispatch }) => (
-  <button
-    className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect facebook"
+  <div
+    className="GroupSelector"
     onClick={ev => {
       ev.preventDefault();
       loginFacebook(dispatch);
     }}
   >
     Facebook
-  </button>
+  </div>
 );
 
 const loginFacebook = (dispatch) => {

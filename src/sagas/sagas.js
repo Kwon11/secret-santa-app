@@ -136,7 +136,7 @@ export function* newInitialState (action) {
 }
 
 function facebookLoginCall(action) {
-  return axios.get('/InitialState', { params: {activeUserId: 3}})
+  return axios.get('/InitialState', { params: {activeUserId: 23}})
   .then((response) => {
     console.log('response facebooklogincall', response);
     //yield put actions here that will get interpreted by the reducers to build new initial state

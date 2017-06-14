@@ -46,7 +46,7 @@ class TargetListView extends Component {
       return (
           <div>
             <h3>{this.props.groups[this.props.location.search.slice(7)].targetName}'s Wishlist</h3>
-            <ul>
+            <ul className="Wishlist">
               {this.renderList()}
             </ul>
           </div>
