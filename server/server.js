@@ -25,25 +25,13 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 app.use(express.static(path.join(__dirname, '../dist')));
 app.use(bodyParser.json())
 
-app.post('/Login', (req, res) => {
-
-})
-
-
-app.get('/Test', (req, res) => {
-  console.log(req.query.keywords);
-  var options = {
-    SearchIndex: 'All',
-    ResponseGroup: 'OfferSummary, ItemAttributes, Images',
-    Keywords: req.query.keywords
-  }
-  prodAdv.call("ItemSearch", options, function(err, result) {
-    res.send(result);
-  })
-})
-
 app.get('/InitialState', (req, res) => {
-  var activeUser = 5;
+  let activeUser = 5;
+  console.log('req.query.activeUserId', req.query.activeUserId)
+  if (req.query.activeUserId) {
+    console.log('does it?')
+    activeUser = req.query.activeUserId;
+  }
   mainCall(activeUser)
     .then((result) => {
       //[0 -- username, 1 -- [{group_id and groupName}], 2 -- [{group_id, target_id, targetName}], 3 -- [{group_id: group_id, wishlist: []}] userWishLIst],  4 --[same but for target]]
@@ -71,6 +59,25 @@ app.get('/InitialState', (req, res) => {
       res.send(initialState);
     }) 
 })
+
+app.post('/Login', (req, res) => {
+
+})
+
+
+app.get('/Test', (req, res) => {
+  console.log(req.query.keywords);
+  var options = {
+    SearchIndex: 'All',
+    ResponseGroup: 'OfferSummary, ItemAttributes, Images',
+    Keywords: req.query.keywords
+  }
+  prodAdv.call("ItemSearch", options, function(err, result) {
+    res.send(result);
+  })
+})
+
+
 
 app.post('/ADD', (req, res) => {
   console.log('got post to add', req.body);

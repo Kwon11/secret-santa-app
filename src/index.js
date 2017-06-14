@@ -13,6 +13,24 @@ import createSagaMiddleWare from 'redux-saga'
 import rootSaga from './sagas/sagas.js'
 import axios from 'axios';
 
+window.fbAsyncInit = function() {
+
+FB.init({
+    appId: "139290936629714",
+    cookie: true,
+    status: true,
+    xfbml: true,
+    version: "v2.5"
+  });
+};
+(function(d, s, id) {
+  var js, fjs=d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js=d.createElement(s); js.id=id;
+  js.src="//connect.facebook.net/en_US/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, "script", "facebook-jssdk"));
+
 axios.get('/InitialState')
   .then((response) => {
     console.log('response', response);

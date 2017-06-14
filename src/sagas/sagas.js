@@ -10,7 +10,8 @@ export default function* rootSaga () {
     watchRemoveWishlistCall(),
     watchGroupAssignCall(),
     watchGroupAccept(),
-    watchInvite()
+    watchInvite(),
+    watchFacebookLogin()
     ])
 };
 
@@ -119,5 +120,29 @@ function inviteCall (action) {
   })
   .catch((err) => {
     console.log('err in invitecall', err);
+  })
+}
+
+export function* watchFacebookLogin() {
+  yield takeEvery('FACEBOOK_LOGIN', newInitialState);
+}
+
+export function* newInitialState (action) {
+  const newInitialData = yield call(facebookLoginCall, action)
+  yield put ({
+    type: 'LOGIN',
+    data: newInitialData
+  })
+}
+
+function facebookLoginCall(action) {
+  return axios.get('/InitialState', { params: {activeUserId: 3}})
+  .then((response) => {
+    console.log('response facebooklogincall', response);
+    //yield put actions here that will get interpreted by the reducers to build new initial state
+    return response.data;
+  })
+  .catch((err) => {
+    console.log('error sagas 136', err);
   })
 }

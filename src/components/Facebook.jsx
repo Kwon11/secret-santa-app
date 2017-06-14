@@ -19,12 +19,12 @@ const loginFacebook = (dispatch) => {
   FB.getLoginStatus(response => {
     if (response.status === "connected") {
       console.log('connected', response);
-      dispatch(facebook("facebook"));
+      dispatch(facebook(response));
     } else {
       FB.login(response => {
         if (response.authSuccess) {
           console.log('not connected', response)
-          dispatch(facebook("facebook"));
+          dispatch(facebook(response));
         }
       }, { scope: "email,public_profile", info_fields: "email,name" });
     }

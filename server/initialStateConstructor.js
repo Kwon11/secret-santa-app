@@ -56,7 +56,6 @@ var targetWishlistsCall = function (data) {
               })
             }
             if (data[i].accepted === 1) {
-              console.log('targetwishlistcall line 59 goes true')
               amazonBatchCall(i);
             } else {
               counter++;
@@ -88,7 +87,6 @@ var convertToWishlist = (data) => {
           if (err) {
             console.log('err', err);
           }
-          console.log('line 99 result', result);
           wishlistObject.push({
             group_id: data[index].group_id,
             wishlist: result[0].wishlist,
@@ -122,7 +120,6 @@ var userWishlistsCall = (data) => {
     var counter = 0;
     for (var i = 0; i < data.length; i++) {
       function amazonBatchCall (index) {
-        console.log('amazonbatchcalled for ', index, data[index].wishlist);
         var options = {
 
           ResponseGroup: 'OfferSummary, ItemAttributes, Images',
@@ -139,7 +136,6 @@ var userWishlistsCall = (data) => {
             wishlist: result.Items.Item
           })
           if (counter === complete) {
-            console.log('userwishlist data for', index, userWishlistData);
             resolve(userWishlistData);
           }
         })

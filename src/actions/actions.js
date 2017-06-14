@@ -50,6 +50,10 @@ export function invite (user_id, group_id) {
   };
 }
 
-export function facebook () {
-  console.log('facebook');
+export function facebook (response) {
+  console.log('facebook', response);
+  return {
+    type: 'FACEBOOK_LOGIN',
+    user_id: response.authResponse.userID
+  }
 }
