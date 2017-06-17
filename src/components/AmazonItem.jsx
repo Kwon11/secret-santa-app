@@ -37,12 +37,14 @@ class AmazonItem extends Component {
   render () {
     return (
         <div className="AmazonItem">
-          <div>{this.props.item.ItemAttributes.Title}</div>
-          <div><img src={this.props.item.SmallImage.URL}></img></div>
-          <div>{this.props.item.ItemAttributes.ProductGroup}</div>
-          <div>{this.state.price}</div>
-          <div><a href={this.props.item.DetailPageURL}></a></div>
-          <button onClick={() => this.itemClick(this.props.type, this.props.item, this.props.group_id, this.props.user_id)}>{this.props.type} To Wishlist</button>
+          <div className="AmazonPicture"><img src={this.props.item.MediumImage.URL}></img></div>
+          <div className="AmazonItemDetails">
+            <div>{this.props.item.ItemAttributes.Title}</div>
+            <div>{this.props.item.ItemAttributes.ProductGroup}</div>
+            <div>{this.state.price}</div>
+            <div><a href={this.props.item.DetailPageURL}></a></div>
+            <button onClick={() => this.itemClick(this.props.type, this.props.item, this.props.group_id, this.props.user_id)}>{this.props.type} To Wishlist</button>
+          </div>
         </div>
       );
   }

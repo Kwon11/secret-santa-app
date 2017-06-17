@@ -10,9 +10,9 @@ body {
   width: 80vw;
   max-width: 1000px;
   margin: auto;
-  height: 50px;
-  display: flex;
   justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .title {
@@ -51,7 +51,7 @@ body {
 .GroupMenuLink {
   list-style-type: none;
   padding: 5px;
-  background-color: #2EED24;
+  background-color: #45C357;
   width: 200px;
 }
 
@@ -72,10 +72,14 @@ body {
   width: 100%;
   padding: 0px;
   margin: 0px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  justify-content: space-around;
 }
 .NavBarLink {
   color: white;
-  font-size: 1.5em;
+  font-size: 30px;
   flex-grow: 1;
   background-color: #45C357;
   border: 1px solid #D4D4D4;
@@ -84,14 +88,25 @@ body {
   list-style-type: none;
   border-radius: 10px 10px;
   padding: 10px;
+  min-width: 125px;
 }
 
 .AmazonItem {
   width: 50vw;
   background-color: white;
-  border: 1px solid black;
   margin: auto;
+  margin-top: 5px;
   padding: 15px;
+  border-radius: 5px;
+  display: flex;
+}
+.AmazonItemDetails {
+  display: inline-block;
+  max-width: 70%;
+  align-self:;
+}
+.AmazonPicture {
+  display: inline-block;
 }
 
 .Wishlist {
@@ -100,9 +115,32 @@ body {
   width: 100%;
 }
 
+.ListTitle {
+    color: #45C357;
+    text-align: center;
+    font-size: 24px;
+}
+.ListTitleGroup {
+  color: #ED6164;
+  text-align: center;
+  font-size: 24px;
+}
+.ListTitleContainer {
+  display: flex;
+  margin: auto;
+  justify-content: space-between;
+  width: 50vw;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+.addItemsButton {
+}
+
 .MainViewLink {
   color: white;
 }
+
 
 a {
   text-decoration: none;

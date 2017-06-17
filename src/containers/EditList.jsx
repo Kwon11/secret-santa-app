@@ -35,7 +35,7 @@ class EditList extends Component {
     console.log('rendered')
     return (
         <div>
-          <h3>
+          <h3 className="ListTitle">
             <form onSubmit={(event) => {
                 event.preventDefault()
                 this.props.itemSearch(this.state.searchTerm)

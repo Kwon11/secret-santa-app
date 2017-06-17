@@ -24,7 +24,7 @@ class TargetListView extends Component {
   renderList () {
     console.log('this.state.list', this.state.list)
     if (this.state.list === undefined) {
-      return <div> Your receipient has yet to add items to their list! </div>
+      return <div className="ListTitle"> Your receipient has yet to add items to their list! </div>
     }
     if (typeof this.state.list === 'string') {
       console.log('recognize its a string');
@@ -45,7 +45,12 @@ class TargetListView extends Component {
     if (this.props.groups[this.props.location.search.slice(7)]) {
       return (
           <div>
-            <h3>{this.props.groups[this.props.location.search.slice(7)].targetName}'s Wishlist</h3>
+            <div className="ListTitleContainer">
+            <div className="ListTitleGroup">
+              <div className="ListTitle">Giftee's List from Group: </div>{this.props.groups[this.props.location.search.slice(7)].groupname}</div>
+            <div className="ListTitle">
+              {this.props.groups[this.props.location.search.slice(7)].targetName}'s Wishlist</div>
+            </div>
             <ul className="Wishlist">
               {this.renderList()}
             </ul>

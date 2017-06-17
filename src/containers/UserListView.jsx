@@ -25,7 +25,7 @@ class UserListView extends Component {
   renderList () {
     console.log('this.state.list', this.state.list)
     if (this.state.list === undefined) {
-      return <div> add items to your list to get started! </div>
+      return <div className="ListTitle"> add items to your list to get started! </div>
     }
     if (this.state.list.length === undefined || this.state.list.length === 1) {
       return (
@@ -43,8 +43,13 @@ class UserListView extends Component {
     if (this.props.groups[this.props.location.search.slice(7)]) {
       return (
           <div>
-            <h3>Your list for {this.props.groups[this.props.location.search.slice(7)].groupname} </h3>
-            <Link to={`/EditList${this.props.location.search}`} className="addItemsButton">Add Items </Link>
+            <div className="ListTitleContainer">
+              <div>
+                <div className="ListTitle">Your list for group: </div>
+                <div className="ListTitleGroup">{this.props.groups[this.props.location.search.slice(7)].groupname}</div>
+              </div>
+              <Link to={`/EditList${this.props.location.search}`} className="addItemsButton"><button>Add Items </button></Link>
+            </div>
             <ul className="Wishlist">
               {this.renderList()}
             </ul>
